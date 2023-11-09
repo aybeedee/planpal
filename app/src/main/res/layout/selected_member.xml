@@ -1,0 +1,48 @@
+<!-- res/layout/search_result_item.xml -->
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="8dp">
+
+    <!-- Circular ImageView for the profile image -->
+    <ImageView
+        android:id="@+id/contactProfileImage"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:background="@drawable/circular_background"
+        android:layout_centerVertical="true"
+        android:layout_alignParentStart="true" />
+
+    <!-- TextView for the contact name -->
+    <TextView
+        android:id="@+id/resultName"
+        android:layout_toRightOf="@+id/contactProfileImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="8dp" />
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_toRightOf="@+id/resultName"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="47dp"
+        android:background="@drawable/purple_circle"
+        android:clickable="true"
+        android:contentDescription="Camera Button" />
+
+    <ImageButton
+        android:id="@+id/plusButton"
+        android:layout_toRightOf="@+id/resultName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginLeft="50dp"
+        android:src="@drawable/baseline_add_24"
+        android:background="?android:attr/selectableItemBackground"
+        />
+
+</RelativeLayout>

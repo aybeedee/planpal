@@ -1,0 +1,20 @@
+<!-- res/drawable/edittext_background.xml -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Outer border -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#FFFFFF" />
+            <stroke
+                android:width="2dp"
+            android:color="#F0F0F0" />
+            <corners android:radius="8dp" />
+        </shape>
+    </item>
+
+    <!-- Inner padding (to give space between the border and text) -->
+    <item android:top="4dp" android:left="4dp" android:right="4dp" android:bottom="4dp">
+        <shape android:shape="rectangle">
+            <solid android:color="#FFFFFF" />
+        </shape>
+    </item>
+</layer-list>

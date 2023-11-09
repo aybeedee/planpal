@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#5D39C9">
+
+
+    <ImageView
+        android:id="@+id/ellipse1"
+        android:layout_width="100dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="30dp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/img_8"
+        ></ImageView>
+
+    <ImageView
+        android:id="@+id/profileImage"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="40dp"
+        android:background="@drawable/circular_background"
+        android:src="@drawable/img_6"
+        ></ImageView>
+
+    <ImageButton
+        android:id="@+id/ellipse2"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="35dp"
+        android:layout_marginLeft="350dp"
+        android:background="@drawable/img_10"
+        ></ImageButton>
+
+
+    <EditText
+        android:drawableLeft="@drawable/baseline_search_24"
+        android:layout_below="@+id/ellipse1"
+        android:layout_marginTop="30dp"
+        android:paddingLeft="20dp"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/search_bar"
+        android:layout_width="350dp"
+        android:layout_height="40dp"
+        android:layout_weight="1"
+        android:background="@drawable/rounded_search_bar"
+        android:hint="Search..."
+        android:inputType="text" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/search_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/rounded_corner"
+        >
+
+        <LinearLayout
+            android:layout_below="@+id/ellipse1"
+            android:layout_width="350dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp">
+
+            <Button
+                android:id="@+id/friendsbutton"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Friends"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:textColor="@color/black"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true" />
+
+            <View
+                android:id="@+id/bar"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@android:color/black" />
+
+            <Button
+                android:id="@+id/requestsbutton"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Requests"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:textColor="#5D33C9"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/colorBar"
+            android:orientation="horizontal"
+            android:layout_below="@+id/ellipse1"
+            android:layout_width="350dp"
+            android:layout_height="4dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/color_bar1" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:text="Incoming"
+            ></TextView>
+
+        <!-- RecyclerView for Incoming Friend Requests -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/incomingRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/colorBar"
+            android:layout_marginTop="10dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:text="Outgoing"
+            ></TextView>
+
+
+        <!-- RecyclerView for Outgoing Friend Requests -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/outgoingRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/incomingRecyclerView"
+            android:layout_marginTop="10dp"/>
+
+
+
+    </LinearLayout>
+
+
+
+
+
+
+
+</RelativeLayout>
