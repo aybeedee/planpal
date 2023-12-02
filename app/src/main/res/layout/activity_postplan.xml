@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Postplan"
+    android:orientation="vertical"
+    android:background="#5D39C9"
+    android:weightSum="4">
+
+    <RelativeLayout
+        android:id="@+id/headerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"
+        android:padding="0dp"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/backArrow"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="38dp"
+            android:layout_marginLeft="18dp"
+            android:src="@drawable/back_arrow">
+        </ImageView>
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_centerHorizontal="true"
+            android:text="Create Plan"
+            android:textColor="#ffffff"
+            android:textStyle="bold"
+            android:textSize="30dp"/>
+
+<!--        <ImageView-->
+<!--            android:id="@+id/plansButton"-->
+<!--            android:layout_width="25dp"-->
+<!--            android:layout_height="25dp"-->
+<!--            android:layout_marginLeft="300dp"-->
+<!--            android:layout_marginRight="18dp"-->
+<!--            android:layout_marginTop="40dp"-->
+<!--            android:text="PLANS"-->
+<!--            android:textStyle="bold"-->
+<!--            android:textSize="18dp"-->
+<!--            android:background="@drawable/editpen"-->
+<!--            />-->
+
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/descriptionLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3.75"
+        android:background="@drawable/rounded_corner">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="18dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/descriptionTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Plan Details"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:textColor="#000000"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"/>
+
+
+            <EditText
+                android:id="@+id/planNameEditText"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:hint="Enter Plan Name"
+                android:paddingLeft="10dp"
+                android:background="@drawable/rounded_box"
+                android:layout_marginBottom="20dp"/>
+
+            <EditText
+                android:id="@+id/locationEditText"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:hint="Location"
+                android:background="@drawable/rounded_box"
+                android:layout_marginBottom="20dp"
+                android:drawableLeft="@drawable/location_foreground" />
+
+            <EditText
+                android:id="@+id/dateEditText"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:hint="Date"
+                android:background="@drawable/rounded_box"
+                android:layout_marginBottom="20dp"
+                android:drawableLeft="@drawable/calendar_foreground"
+                />
+
+            <EditText
+                android:id="@+id/startTimeEditText"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:hint="Start Time"
+                android:background="@drawable/rounded_box"
+                android:layout_marginBottom="20dp"
+                android:drawableLeft="@drawable/start_time_foreground"
+                />
+
+            <EditText
+                android:id="@+id/endTimeEditText"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:hint="End Time"
+                android:background="@drawable/rounded_box"
+                android:layout_marginBottom="20dp"
+                android:drawableLeft="@drawable/time_foreground"
+                />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+                <ImageView
+                    android:id="@+id/update"
+                    android:layout_width="150dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/update"
+                    android:layout_marginTop="30dp"/>
+                <ImageView
+                    android:id="@+id/cancel"
+                    android:layout_width="150dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="75dp"
+                    android:layout_marginTop="30dp"
+                    android:src="@drawable/cancel"/>
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

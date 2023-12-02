@@ -13,6 +13,18 @@
         android:theme="@style/Theme.Project"
         tools:targetApi="31">
         <activity
+            android:name=".Schedule"
+            android:exported="false" />
+        <activity
+            android:name=".ProfileViewSelf"
+            android:exported="false" />
+        <activity
+            android:name=".Postplan"
+            android:exported="false" />
+        <activity
+            android:name=".Plans"
+            android:exported="false" />
+        <activity
             android:name=".FriendRequests"
             android:exported="false" />
         <activity

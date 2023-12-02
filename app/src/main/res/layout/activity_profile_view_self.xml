@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ProfileViewSelf"
+    android:orientation="vertical"
+    android:background="#5D39C9"
+    android:weightSum="4">
+
+    <RelativeLayout
+        android:id="@+id/headerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="0dp"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/backArrow"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="35dp"
+            android:layout_marginLeft="18dp"
+            android:src="@drawable/back_arrow">
+        </ImageView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:cardElevation="0dp"
+            app:cardCornerRadius="48dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginLeft="140dp"
+            android:layout_gravity="center"
+            android:clickable="true">
+
+            <ImageView
+                android:id="@+id/profile_pic"
+                android:layout_width="96dp"
+                android:layout_height="96dp"
+                android:layout_gravity="center"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/profile_foreground" />
+        </androidx.cardview.widget.CardView>
+
+
+        <TextView
+            android:id="@+id/boardRoomName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sharjeel Ahmed"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:textSize="35dp"
+            android:layout_marginTop="100dp"
+            android:layout_centerHorizontal="true"
+            />
+
+        <TextView
+            android:id="@+id/createdByTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="abd986@gmail.com"
+            android:textColor="#DBDBDB"
+            android:textSize="16dp"
+            android:layout_marginTop="148dp"
+            android:layout_centerHorizontal="true"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/descriptionLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3.25"
+        android:background="@drawable/rounded_corner">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="18dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/descriptionTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="About"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:textColor="#000000"
+                android:layout_gravity="center" />
+
+            <TextView
+                android:id="@+id/descriptionText"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/rounded_box"
+                android:layout_marginTop="10dp"
+                android:padding="5dp"
+                android:text="The board room of all and everything that has to do with the board and its members." />
+
+            <TextView
+                android:id="@+id/upcomingPlanTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Schedule"
+                android:textStyle="bold"
+                android:textColor="#000000"
+                android:layout_marginTop="10dp"
+                android:textSize="20dp"
+                android:layout_gravity="center" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_box"
+                android:orientation="horizontal"
+                android:weightSum="5">
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5">
+                    <TextView
+                        android:id="@+id/freeNext"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/start_time_foreground"
+                        />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2.75"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/freeNextText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Free Next"
+                        android:layout_marginLeft="20dp"
+                        android:textColor="#C4C4C4"
+                        android:textStyle="bold"
+                        />
+                    <TextView
+                        android:id="@+id/time_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="8:00PM - 10:00 PM"
+                        android:padding="0dp"
+                        android:layout_marginLeft="20dp"
+                        android:textSize="20dp"
+                        />
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.75"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/dates_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="07/10/2023"
+                        android:padding="0dp"
+                        android:layout_marginLeft="45dp"
+                        android:layout_marginTop="25dp"
+                        android:textSize="15dp"
+                        android:textColor="#C4C4C4"
+                        />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_box"
+                android:orientation="horizontal"
+                android:layout_marginTop="20dp"
+                android:weightSum="5">
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5">
+                    <TextView
+                        android:id="@+id/freeNext1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/start_time_foreground"
+                        />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2.75"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/freeTomText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Free Tomorrow"
+                        android:layout_marginLeft="20dp"
+                        android:textColor="#C4C4C4"
+                        android:textStyle="bold"
+                        />
+                    <TextView
+                        android:id="@+id/time_text1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="9:00PM - 10:00 PM"
+                        android:padding="0dp"
+                        android:layout_marginLeft="20dp"
+                        android:textSize="20dp"
+                        />
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.75"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/dates_text1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="08/10/2023"
+                        android:padding="0dp"
+                        android:layout_marginLeft="45dp"
+                        android:layout_marginTop="25dp"
+                        android:textSize="15dp"
+                        android:textColor="#C4C4C4"
+                        />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
