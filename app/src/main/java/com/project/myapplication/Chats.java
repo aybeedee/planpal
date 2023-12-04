@@ -62,5 +62,14 @@ public class Chats extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        profileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Create an intent to open the new activity
+                Intent intent = new Intent(Chats.this, ProfileViewSelf.class);
+                // Start the new activity
+                startActivity(intent);
+            }
+        });
     }
 }

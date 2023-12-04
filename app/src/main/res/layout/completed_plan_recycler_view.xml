@@ -68,7 +68,7 @@
             android:orientation="horizontal"
             android:layout_marginTop="20dp">
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/upcoming_button"
                 android:background="@drawable/oval_button"
                 android:layout_width="128dp"

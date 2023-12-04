@@ -6,7 +6,6 @@
     android:background="#5D39C9"
     tools:context=".creategroup1">
 
-
     <TextView
         android:id="@+id/ellipse1"
         android:layout_width="wrap_content"
@@ -18,8 +17,6 @@
         android:textColor="@color/white"
         android:textStyle="bold"
         ></TextView>
-
-
 
     <ImageButton
         android:layout_width="wrap_content"
@@ -86,8 +83,6 @@
             >
         </EditText>
 
-
-
         <EditText
             android:id="@+id/addmember"
             android:layout_width="350dp"
@@ -98,7 +93,6 @@
             android:background="@drawable/edittext_border"
             android:layout_gravity="center"
             >
-
         </EditText>
 
         <ImageView

@@ -45,7 +45,7 @@
                 android:src="@drawable/profile_foreground" />
         </androidx.cardview.widget.CardView>
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/plansButton"
             android:layout_width="wrap_content"
             android:layout_height="45dp"

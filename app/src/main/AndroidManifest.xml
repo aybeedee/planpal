@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -13,6 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Project"
         tools:targetApi="31">
+        <activity
+            android:name=".add_members_group"
+            android:exported="false" />
         <activity
             android:name=".Schedule"
             android:exported="false" />
@@ -33,13 +37,12 @@
             android:exported="false" />
         <activity
             android:name=".chat"
-            android:exported="false" />
-<!--        <activity-->
-<!--            android:name=".creategroup3"-->
-<!--            android:exported="false" />-->
-<!--        <activity-->
-<!--            android:name=".creategroup2"-->
-<!--            android:exported="false" />-->
+            android:exported="false" /> <!-- <activity -->
+        <!-- android:name=".creategroup3" -->
+        <!-- android:exported="false" /> -->
+        <!-- <activity -->
+        <!-- android:name=".creategroup2" -->
+        <!-- android:exported="false" /> -->
         <activity
             android:name=".creategroup1"
             android:exported="false" />
@@ -54,13 +57,12 @@
             android:exported="false" />
         <activity
             android:name=".Signup"
-            android:exported="false" />
-<!--        <activity-->
-<!--            android:name=".Splash"-->
-<!--            android:exported="false" />-->
-<!--        <activity-->
-<!--            android:name=".t"-->
-<!--            android:exported="false" />-->
+            android:exported="false" /> <!-- <activity -->
+        <!-- android:name=".Splash" -->
+        <!-- android:exported="false" /> -->
+        <!-- <activity -->
+        <!-- android:name=".t" -->
+        <!-- android:exported="false" /> -->
         <activity
             android:name=".MainActivity"
             android:exported="true">

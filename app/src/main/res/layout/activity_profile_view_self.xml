@@ -32,15 +32,15 @@
             android:layout_height="100dp"
             app:cardElevation="0dp"
             app:cardCornerRadius="48dp"
-            android:layout_marginTop="0dp"
+            android:layout_marginTop="5dp"
             android:layout_marginLeft="140dp"
             android:layout_gravity="center"
             android:clickable="true">
 
             <ImageView
                 android:id="@+id/profile_pic"
-                android:layout_width="96dp"
-                android:layout_height="96dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:layout_gravity="center"
                 android:layout_centerHorizontal="true"
                 android:src="@drawable/profile_foreground" />
@@ -48,25 +48,25 @@
 
 
         <TextView
-            android:id="@+id/boardRoomName"
+            android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Sharjeel Ahmed"
             android:textColor="#FFFFFF"
             android:textStyle="bold"
             android:textSize="35dp"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="110dp"
             android:layout_centerHorizontal="true"
             />
 
         <TextView
-            android:id="@+id/createdByTextView"
+            android:id="@+id/email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="abd986@gmail.com"
             android:textColor="#DBDBDB"
             android:textSize="16dp"
-            android:layout_marginTop="148dp"
+            android:layout_marginTop="158dp"
             android:layout_centerHorizontal="true"/>
     </RelativeLayout>
 
@@ -83,24 +83,6 @@
             android:padding="18dp"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/descriptionTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="About"
-                android:textSize="20dp"
-                android:textStyle="bold"
-                android:textColor="#000000"
-                android:layout_gravity="center" />
-
-            <TextView
-                android:id="@+id/descriptionText"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="@drawable/rounded_box"
-                android:layout_marginTop="10dp"
-                android:padding="5dp"
-                android:text="The board room of all and everything that has to do with the board and its members." />
 
             <TextView
                 android:id="@+id/upcomingPlanTitle"
@@ -122,7 +104,7 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.5">
+                    android:layout_weight="0.6">
                     <TextView
                         android:id="@+id/freeNext"
                         android:layout_width="match_parent"
@@ -143,7 +125,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Free Next"
-                        android:layout_marginLeft="20dp"
+                        android:layout_marginLeft="5dp"
                         android:textColor="#C4C4C4"
                         android:textStyle="bold"
                         />
@@ -153,7 +135,7 @@
                         android:layout_height="wrap_content"
                         android:text="8:00PM - 10:00 PM"
                         android:padding="0dp"
-                        android:layout_marginLeft="20dp"
+                        android:layout_marginLeft="5dp"
                         android:textSize="20dp"
                         />
 
@@ -161,18 +143,20 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1.75"
+                    android:layout_weight="1.6"
+                    android:layout_gravity="end|right|bottom"
+                    android:layout_marginRight="5dp"
                     android:orientation="vertical">
                     <TextView
                         android:id="@+id/dates_text"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="07/10/2023"
                         android:padding="0dp"
-                        android:layout_marginLeft="45dp"
-                        android:layout_marginTop="25dp"
+                        android:layout_gravity="end|right"
                         android:textSize="15dp"
                         android:textColor="#C4C4C4"
+                        android:layout_marginBottom="5dp"
                         />
 
                 </LinearLayout>
@@ -190,7 +174,7 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.5">
+                    android:layout_weight="0.6">
                     <TextView
                         android:id="@+id/freeNext1"
                         android:layout_width="match_parent"
@@ -211,7 +195,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Free Tomorrow"
-                        android:layout_marginLeft="20dp"
+                        android:layout_marginLeft="5dp"
                         android:textColor="#C4C4C4"
                         android:textStyle="bold"
                         />
@@ -221,7 +205,7 @@
                         android:layout_height="wrap_content"
                         android:text="9:00PM - 10:00 PM"
                         android:padding="0dp"
-                        android:layout_marginLeft="20dp"
+                        android:layout_marginLeft="5dp"
                         android:textSize="20dp"
                         />
 
@@ -229,22 +213,53 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1.75"
+                    android:layout_weight="1.6"
+                    android:layout_gravity="end|right|bottom"
+                    android:layout_marginRight="5dp"
                     android:orientation="vertical">
                     <TextView
                         android:id="@+id/dates_text1"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="08/10/2023"
                         android:padding="0dp"
-                        android:layout_marginLeft="45dp"
-                        android:layout_marginTop="25dp"
+                        android:layout_gravity="end|right"
                         android:textSize="15dp"
                         android:textColor="#C4C4C4"
+                        android:layout_marginBottom="5dp"
                         />
-
                 </LinearLayout>
 
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/friends"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/friends"
+                    android:layout_gravity="end|bottom"
+                    android:paddingBottom="7dp"
+                    />
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="bottom|end" />
+                <ImageView
+                    android:id="@+id/schedule"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/schedule"
+                    android:layout_gravity="end|bottom"
+
+                    android:paddingBottom="10dp"
+                    />
 
             </LinearLayout>
 
