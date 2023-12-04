@@ -70,7 +70,7 @@
 
             <Button
                 android:id="@+id/upcoming_button"
-                android:background="@drawable/green_oval_button"
+                android:background="@drawable/oval_button"
                 android:layout_width="128dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="0dp"

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "732061003595",
+    "project_id": "planpal-a1195",
+    "storage_bucket": "planpal-a1195.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:732061003595:android:48fbcd1c1ed255af9102ce",
+        "android_client_info": {
+          "package_name": "com.project.myapplication"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBeBMWHPy_wBRPNAEBLvD9k2Ez03QnXn-o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
