@@ -37,6 +37,11 @@ public class Chats extends AppCompatActivity {
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
+        // Retrieve IP address from strings.xml
+        String ipAddress = getString(R.string.ip_addr);
+        // Concatenate the retrieved IP address with the URL
+        String url = "http://" + ipAddress;
+
         mDatabase.child("users").child(userId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
@@ -48,7 +53,7 @@ public class Chats extends AppCompatActivity {
 
                 else {
                     User1 userObject = task.getResult().getValue(User1.class);
-                    Picasso.get().load(userObject.getProfilePhotoUrl()).into(profileImage);
+                    Picasso.get().load(url + userObject.getProfilePhotoUrl()+".jpg").into(profileImage);
                 }
             }
         });

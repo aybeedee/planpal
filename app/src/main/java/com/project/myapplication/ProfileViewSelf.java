@@ -44,6 +44,11 @@ public class ProfileViewSelf extends AppCompatActivity {
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
+        // Retrieve IP address from strings.xml
+        String ipAddress = getString(R.string.ip_addr);
+        // Concatenate the retrieved IP address with the URL
+        String url = "http://" + ipAddress;
+
         mDatabase.child("users").child(userId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
@@ -55,7 +60,7 @@ public class ProfileViewSelf extends AppCompatActivity {
 
                 else {
                     User1 userObject = task.getResult().getValue(User1.class);
-                    Picasso.get().load(userObject.getProfilePhotoUrl()).into(profilePic);
+                    Picasso.get().load(url + userObject.getProfilePhotoUrl() + ".jpg").into(profilePic);
                     email1.setText(userObject.getEmail());
                     name1.setText(userObject.getFullName());
                 }
