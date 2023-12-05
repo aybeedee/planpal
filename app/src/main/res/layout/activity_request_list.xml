@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="#5D39C9"
+    tools:context=".FriendsList">
+
+    <ImageView
+        android:id="@+id/ellipse1"
+        android:layout_width="100dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="30dp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/img_8"
+        ></ImageView>
+
+    <ImageView
+        android:id="@+id/backArrow"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="35dp"
+        android:layout_marginLeft="18dp"
+        android:src="@drawable/back_arrow">
+    </ImageView>
+
+    <ImageView
+        android:id="@+id/ellipse2"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="35dp"
+        android:layout_marginLeft="330dp"
+        android:background="@drawable/img_10"
+        ></ImageView>
+
+
+    <EditText
+        android:drawableLeft="@drawable/baseline_search_24"
+        android:layout_below="@+id/ellipse1"
+        android:layout_marginTop="30dp"
+        android:paddingLeft="20dp"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/search_bar"
+        android:layout_width="350dp"
+        android:layout_height="40dp"
+        android:layout_weight="1"
+        android:background="@drawable/rounded_search_bar"
+        android:hint="Search..."
+        android:inputType="text" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/search_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/rounded_corner"
+        >
+
+        <LinearLayout
+            android:layout_below="@+id/ellipse1"
+            android:layout_width="350dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp">
+
+            <TextView
+                android:id="@+id/friendsText"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Friends"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true" />
+
+            <View
+                android:id="@+id/bar"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@android:color/black" />
+
+            <TextView
+                android:id="@+id/requestsText"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Requests"
+                android:textColor="#5D33C9"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/colorBar"
+            android:orientation="horizontal"
+            android:layout_below="@+id/ellipse1"
+            android:layout_width="350dp"
+            android:layout_height="4dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/color_bar_2" />
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Incoming"
+            android:layout_gravity="center_horizontal"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:textColor="#000000"/>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/incomingrecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:padding="10dp"
+            android:scrollbars="vertical" />
+
+        <TextView
+            android:id="@+id/emptyRecyclerViewMessage1"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginTop="10dp"
+            android:padding="10dp"
+            android:text="No New Friend Request"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:visibility="gone"/>
+
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Outgoing"
+            android:layout_gravity="center_horizontal"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:textColor="#000000"/>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/outgoingrecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:padding="10dp"
+            android:scrollbars="vertical" />
+        <TextView
+            android:id="@+id/emptyRecyclerViewMessage2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:padding="10dp"
+            android:text="No Friend Request Sent"
+            android:textSize="16sp"
+            android:visibility="gone"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

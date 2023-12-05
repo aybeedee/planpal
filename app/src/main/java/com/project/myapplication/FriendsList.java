@@ -6,7 +6,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -26,6 +29,7 @@ public class FriendsList extends AppCompatActivity {
     FriendsListAdapter friendsAdapter;
     String userId;
     List<User1> UsersList;
+    TextView request,friendText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,8 +37,11 @@ public class FriendsList extends AppCompatActivity {
         setContentView(R.layout.activity_friends_list);
         mAuth = FirebaseAuth.getInstance();
         userId = mAuth.getUid().toString();
-        friends_recycler=findViewById(R.id.friendsrecyclerView);
         mDatabase = FirebaseDatabase.getInstance().getReference();
+        friends_recycler=findViewById(R.id.friendsrecyclerView);
+        request=findViewById(R.id.requestsText);
+        friendText=findViewById(R.id.friendsText);
+
 
         // Retrieve IP address from strings.xml
         String ipAddress = getString(R.string.ip_addr);
@@ -121,6 +128,21 @@ public class FriendsList extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {}
         });
 
+        request.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(FriendsList.this, Request_list.class);
+                startActivity(intent);
+            }
+        });
+
+        friendText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(FriendsList.this, FriendsList.class);
+                startActivity(intent);
+            }
+        });
 
 
 

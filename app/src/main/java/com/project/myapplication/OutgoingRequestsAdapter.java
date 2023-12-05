@@ -11,54 +11,56 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
-public class OutgoingRequestsAdapter extends RecyclerView.Adapter<OutgoingRequestsAdapter.RequestViewHolder> {
+public class OutgoingRequestsAdapter extends RecyclerView.Adapter<OutgoingRequestsAdapter.MyViewHolder> {
 
-    private List<FriendRequestModel> requests;
-    private Context context;
+    List<User1> userList;
+    Context context;
+    String userId;
+    String ipAddress;
+    String url;
 
-    public OutgoingRequestsAdapter(List<FriendRequestModel> requests, Context context) {
-        this.requests = requests;
+    public OutgoingRequestsAdapter(List<User1> userList, Context context, String userId) {
+        this.userList = userList;
         this.context = context;
+        this.userId = userId;
+        initializeIpAddress();
+    }
+
+    private void initializeIpAddress() {
+        ipAddress = context.getString(R.string.ip_addr);
+        url = "http://" + ipAddress;
     }
 
     @NonNull
     @Override
-    public RequestViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_outgoing_request, parent, false);
-        return new RequestViewHolder(view);
+    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View component = LayoutInflater.from(context).inflate(R.layout.item_outgoing_request, parent, false);
+        return new MyViewHolder(component);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RequestViewHolder holder, int position) {
-        FriendRequestModel request = requests.get(position);
-
-        // Set data to views
-        holder.userName.setText(request.getUserName());
-        // Set more data as needed
-
-        // Set click listener
-        holder.cancelButton.setOnClickListener(v -> {
-            // Handle cancel button click
-        });
+    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+        holder.name.setText(userList.get(position).getFullName());
+        Picasso.get().load(url + userList.get(position).getProfilePhotoUrl() + ".jpg").into(holder.profile_pic);
     }
 
-    @Override
     public int getItemCount() {
-        return requests.size();
+        return userList.size();
     }
 
-    static class RequestViewHolder extends RecyclerView.ViewHolder {
-        ImageView profileImage;
-        TextView userName;
-        ImageButton cancelButton;
+    public class MyViewHolder extends RecyclerView.ViewHolder {
+        TextView name;
+        ImageView profile_pic;
 
-        RequestViewHolder(@NonNull View itemView) {
+        public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            profileImage = itemView.findViewById(R.id.outgoingProfileImage);
-            userName = itemView.findViewById(R.id.outgoingUserName);
-            cancelButton = itemView.findViewById(R.id.cancelButton);
+            name = itemView.findViewById(R.id.outgoingUserName);
+            profile_pic = itemView.findViewById(R.id.profile_pic);
         }
     }
 }

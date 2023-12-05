@@ -2,68 +2,67 @@ package com.project.myapplication;
 
 // IncomingRequestsAdapter.java
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
-public class IncomingRequestsAdapter extends RecyclerView.Adapter<IncomingRequestsAdapter.RequestViewHolder> {
+public class IncomingRequestsAdapter extends RecyclerView.Adapter<IncomingRequestsAdapter.MyViewHolder> {
+    List<User1> userList;
+    Context context;
+    String userId;
+    String ipAddress;
+    String url;
 
-    private List<FriendRequestModel> requests;
-    private Context context;
-
-    public IncomingRequestsAdapter(List<FriendRequestModel> requests, Context context) {
-        this.requests = requests;
+    public IncomingRequestsAdapter(List<User1> userList, Context context, String userId) {
+        this.userList = userList;
         this.context = context;
+        this.userId = userId;
+        initializeIpAddress();
+    }
+
+    private void initializeIpAddress() {
+        ipAddress = context.getString(R.string.ip_addr);
+        url = "http://" + ipAddress;
     }
 
     @NonNull
     @Override
-    public RequestViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_friend_request, parent, false);
-        return new RequestViewHolder(view);
+    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View component = LayoutInflater.from(context).inflate(R.layout.item_friend_request, parent, false);
+        return new MyViewHolder(component);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RequestViewHolder holder, int position) {
-        FriendRequestModel request = requests.get(position);
-
-        // Set data to views
-        holder.userName.setText(request.getUserName());
-        // Set more data as needed
-        // Set click listeners
-        holder.acceptButton.setOnClickListener(v -> {
-            // Handle accept button click
-        });
-        holder.rejectButton.setOnClickListener(v -> {
-            // Handle reject button click
-        });
+    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+        holder.name.setText(userList.get(position).getFullName());
+        Picasso.get().load(url + userList.get(position).getProfilePhotoUrl() + ".jpg").into(holder.profile_pic);
     }
 
     @Override
     public int getItemCount() {
-        return requests.size();
+        return userList.size();
     }
 
-    static class RequestViewHolder extends RecyclerView.ViewHolder {
-        ImageView profileImage;
-        TextView userName;
-        ImageButton acceptButton;
-        ImageButton rejectButton;
+    public class MyViewHolder extends RecyclerView.ViewHolder {
+        TextView name;
+        ImageView profile_pic;
 
-        RequestViewHolder(@NonNull View itemView) {
+        public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            profileImage = itemView.findViewById(R.id.requestProfileImage);
-            userName = itemView.findViewById(R.id.requestUserName);
-            acceptButton = itemView.findViewById(R.id.acceptButton);
-            rejectButton = itemView.findViewById(R.id.rejectButton);
+            name = itemView.findViewById(R.id.requestUserName);
+            profile_pic = itemView.findViewById(R.id.profile_pic);
         }
     }
 }
+
 

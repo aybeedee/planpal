@@ -50,8 +50,8 @@ public class MainActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
 
                             if (task.isSuccessful()) {
-                                Toast.makeText(MainActivity.this, "Log In Successful", Toast.LENGTH_LONG).show();
-                                Toast.makeText(MainActivity.this, mAuth.getUid().toString(), Toast.LENGTH_LONG).show();
+                                //Toast.makeText(MainActivity.this, "Log In Successful", Toast.LENGTH_LONG).show();
+                                //Toast.makeText(MainActivity.this, mAuth.getUid().toString(), Toast.LENGTH_LONG).show();
 
                                 Intent intent = new Intent(MainActivity.this, Chats.class);
                                 startActivity(intent);
