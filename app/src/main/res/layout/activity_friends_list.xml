@@ -6,7 +6,6 @@
     android:background="#5D39C9"
     tools:context=".FriendsList">
 
-
     <ImageView
         android:id="@+id/ellipse1"
         android:layout_width="100dp"
@@ -30,7 +29,7 @@
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_marginTop="35dp"
-        android:layout_marginLeft="350dp"
+        android:layout_marginLeft="330dp"
         android:background="@drawable/img_10"
         ></ImageView>
 
@@ -120,11 +119,5 @@
             android:scrollbars="vertical" />
 
     </LinearLayout>
-
-
-
-
-
-
 
 </RelativeLayout>

@@ -82,7 +82,5 @@ public class ProfileViewSelf extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-
     }
 }
