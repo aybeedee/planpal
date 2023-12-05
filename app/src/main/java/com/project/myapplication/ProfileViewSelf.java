@@ -1,7 +1,11 @@
 package com.project.myapplication;
 
+import static java.security.AccessController.getContext;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,8 +18,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.auth.User;
 import com.google.firebase.inappmessaging.model.Button;
 import com.squareup.picasso.Picasso;
 
@@ -23,7 +30,10 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.security.AccessController;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 
 public class ProfileViewSelf extends AppCompatActivity {
     FirebaseAuth mAuth;
@@ -33,6 +43,7 @@ public class ProfileViewSelf extends AppCompatActivity {
 
     TextView email1,name1;
     ImageView friends,schedule;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +57,7 @@ public class ProfileViewSelf extends AppCompatActivity {
         name1=findViewById(R.id.name);
         friends=findViewById(R.id.friends);
         schedule=findViewById(R.id.schedule);
+
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
@@ -71,6 +83,7 @@ public class ProfileViewSelf extends AppCompatActivity {
                 }
             }
         });
+
 
         friends.setOnClickListener(new View.OnClickListener() {
             @Override

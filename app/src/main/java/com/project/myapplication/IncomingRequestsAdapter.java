@@ -37,12 +37,10 @@ public class IncomingRequestsAdapter extends RecyclerView.Adapter<IncomingReques
         // Set data to views
         holder.userName.setText(request.getUserName());
         // Set more data as needed
-
         // Set click listeners
         holder.acceptButton.setOnClickListener(v -> {
             // Handle accept button click
         });
-
         holder.rejectButton.setOnClickListener(v -> {
             // Handle reject button click
         });
