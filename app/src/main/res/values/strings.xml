@@ -3,6 +3,6 @@
     <!--    aydeebee-->
     <!--   <string name="ip_addr">192.168.137.97</string>-->
     <!--fastFaculty-->
-<!--        <string name="ip_addr">172.17.43.230</string>-->
-    <string name="ip_addr">192.168.100.28</string>
+        <string name="ip_addr">172.16.60.134</string>
+<!--    <string name="ip_addr">192.168.100.28</string>-->
 </resources>

@@ -19,6 +19,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.inappmessaging.model.Button;
 import com.squareup.picasso.Picasso;
 
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.net.UnknownHostException;
+import java.util.Enumeration;
+
 public class ProfileViewSelf extends AppCompatActivity {
     FirebaseAuth mAuth;
     DatabaseReference mDatabase;
@@ -40,7 +46,6 @@ public class ProfileViewSelf extends AppCompatActivity {
         name1=findViewById(R.id.name);
         friends=findViewById(R.id.friends);
         schedule=findViewById(R.id.schedule);
-
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 

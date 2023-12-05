@@ -13,9 +13,12 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.provider.OpenableColumns;
 import android.text.InputType;
+import android.text.format.Formatter;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -102,7 +105,7 @@ public class Signup extends AppCompatActivity {
 
                         String userId = mAuth.getUid().toString();
 
-                        Toast.makeText(Signup.this, userId, Toast.LENGTH_LONG).show();
+                        //Toast.makeText(Signup.this, userId, Toast.LENGTH_LONG).show();
 
                         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
 
