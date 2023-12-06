@@ -73,7 +73,9 @@ public class Chats extends AppCompatActivity {
 
                 else {
                     User1 userObject = task.getResult().getValue(User1.class);
-                    Picasso.get().load(url + userObject.getProfilePhotoUrl()+".jpg").into(profileImage);
+                    String fullProfilePath = url + userObject.getProfilePhotoUrl() + ".jpg";
+                    Log.d("dp-path", fullProfilePath);
+                    Picasso.get().load(fullProfilePath).into(profileImage);
                 }
             }
         });
