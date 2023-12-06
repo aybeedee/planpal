@@ -1,0 +1,30 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Purple gradient for the left half -->
+    <item android:left="0dp" android:right="175dp">
+        <shape android:shape="rectangle">
+            <gradient
+                android:startX="0"
+                android:startY="0"
+                android:endX="1"
+                android:endY="0"
+                android:startColor="@android:color/black"
+                android:endColor="@android:color/black"
+                android:angle="0"/>
+
+        </shape>
+    </item>
+    <!-- Black gradient for the right half -->
+    <item android:left="175dp" android:right="0dp">
+        <shape android:shape="rectangle">
+            <gradient
+                android:startX="0"
+                android:startY="0"
+                android:endX="1"
+                android:endY="0"
+                android:startColor="#5D33C9"
+                android:endColor="#5D33C9"
+                android:angle="0"/>
+
+        </shape>
+    </item>
+</layer-list>

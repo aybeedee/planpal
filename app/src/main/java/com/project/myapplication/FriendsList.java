@@ -2,7 +2,10 @@ package com.project.myapplication;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -22,19 +25,31 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class FriendsList extends AppCompatActivity {
-
-    ImageView addFriendButton;
-    String userId;
-
     FirebaseAuth mAuth;
     DatabaseReference mDatabase;
+    RecyclerView friends_recycler;
+    FriendsListAdapter friendsAdapter;
+    String userId;
+    List<User1> UsersList;
+    TextView request,friendText;
+
+    ImageView addFriendButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +99,79 @@ public class FriendsList extends AppCompatActivity {
                 dialog.setContentView(customLayout);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 dialog.show();
+            }
+        });
+
+        friends_recycler=findViewById(R.id.friendsrecyclerView);
+        request=findViewById(R.id.requestsText);
+        friendText=findViewById(R.id.friendsText);
+
+
+        // Retrieve IP address from strings.xml
+        String ipAddress = getString(R.string.ip_addr);
+        // Concatenate the retrieved IP address with the URL
+        String url = "http://" + ipAddress;
+
+        // Reference to the userFriends node for the specific user
+        DatabaseReference userFriendsRef = mDatabase.child("userFriends").child(userId);
+
+        // Initialize a list to store user friend data
+        UsersList = new ArrayList<>();
+
+        friendsAdapter = new FriendsListAdapter(UsersList , FriendsList.this, userId);
+        friends_recycler.setAdapter(friendsAdapter);
+        RecyclerView.LayoutManager featuredLM = new LinearLayoutManager(FriendsList.this);
+        friends_recycler.setLayoutManager(featuredLM);
+
+        // Retrieve user friend IDs
+        userFriendsRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String previousChildName) {
+                String friendId = dataSnapshot.getKey(); // Get each friend ID
+
+                DatabaseReference userRef = mDatabase.child("users").child(friendId);
+                userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        User1 user = dataSnapshot.getValue(User1.class); // Assuming User class exists
+                        if (user != null) {
+                            UsersList.add(user);
+                            friendsAdapter.notifyDataSetChanged();
+                            // Notify adapter or perform operations with the fetched user data
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        // Handle any errors
+                    }
+                });
+            }
+
+            // Other overridden methods of ChildEventListener
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String previousChildName) {}
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {}
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String previousChildName) {}
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {}
+        });
+
+        request.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(FriendsList.this, Request_list.class);
+                startActivity(intent);
+            }
+        });
+
+        friendText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(FriendsList.this, FriendsList.class);
+                startActivity(intent);
             }
         });
     }

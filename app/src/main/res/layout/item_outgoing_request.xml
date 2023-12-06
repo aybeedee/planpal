@@ -1,56 +1,73 @@
-
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:padding="16dp">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="10dp">
 
-    <!-- Profile Image -->
-    <ImageView
-        android:id="@+id/outgoingProfileImage"
-        android:layout_width="44dp"
-        android:layout_height="44dp"
-        android:background="@drawable/circular_background"
-        android:layout_centerVertical="true"
-        android:layout_alignParentStart="true" />
-
-    <!-- User Info -->
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="392dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="vertical">
+        android:orientation="horizontal">
+        <!-- Profile Image -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="5dp"
+            android:clickable="true"
+            app:cardCornerRadius="48dp"
+            app:cardElevation="0dp">
+
+            <ImageView
+                android:id="@+id/profile_pic"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/circle_img"
+                android:src="@drawable/profile_foreground" />
+        </androidx.cardview.widget.CardView>
 
         <TextView
             android:id="@+id/outgoingUserName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:text="name of request"
             android:textColor="@android:color/black"
-            android:text=""/>
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
-        <!-- Add more details if needed -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center|end"
+            >
+
+            <ImageView
+                android:id="@+id/cancel"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="150dp"
+                android:background="@drawable/circle_img" />
+
+            <ImageButton
+                android:id="@+id/cancelButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="-27.5dp"
+                android:layout_marginTop="3dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:src="@drawable/baseline_remove_24"  />
+        </LinearLayout>
 
     </LinearLayout>
 
-    <ImageView
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="47dp"
-        android:background="@drawable/purple_circle"
-        android:contentDescription="Camera Button" />
-
-    <ImageButton
-        android:id="@+id/cancelButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="13dp"
-        android:layout_marginLeft="-28dp"
-        android:src="@drawable/baseline_remove_24"
-        android:background="?android:attr/selectableItemBackground"
-        />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        android:layout_marginTop="10dp"/>
 
 </LinearLayout>
