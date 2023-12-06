@@ -201,23 +201,77 @@ public class creategroup1 extends AppCompatActivity {
             }
         });
 
-//        createGroupButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//                String groupId = mDatabase.child("groups").push().getKey();
-//
-//                Group group = new Group(groupId, groupName.getText().toString(), groupDescription.getText().toString(), pictureUrl);
-//
-//                mDatabase.child("groups").child(groupId).setValue(group).addOnCompleteListener(new OnCompleteListener<Void>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<Void> task) {
-//                        if (task.isSuccessful()) {
-//                        }
-//                    }
-//                });
-//            }
-//        });
+        createGroupButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String groupId = mDatabase.child("groups").push().getKey();
+
+                Group group = new Group(groupId, groupName.getText().toString(), groupDescription.getText().toString(), pictureUrl);
+
+                // add new group to database
+                mDatabase.child("groups").child(groupId).setValue(group).addOnCompleteListener(new OnCompleteListener<Void>() {
+
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+
+                        if (task.isSuccessful()) {
+
+                            ObjectReference userSelfRef = new ObjectReference(userId);
+                            groupMembers.add(userSelfRef);
+
+                            for (int i = 0; i < groupMembers.size(); i++) {
+
+                                String memberId = groupMembers.get(i).getId();
+
+                                // add group to group member references
+                                mDatabase.child("userGroups")
+                                        .child(memberId)
+                                        .child(groupId)
+                                        .child("id")
+                                        .setValue(groupId)
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                }
+                                                else {
+                                                    Toast.makeText(creategroup1.this, "Group Creation Failed!", Toast.LENGTH_LONG).show();
+                                                }
+                                            }
+                                        });
+
+                                // add group members to group reference
+                                mDatabase.child("groupUsers")
+                                        .child(groupId)
+                                        .child(memberId)
+                                        .child("id")
+                                        .setValue(memberId)
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                }
+                                                else {
+                                                    Toast.makeText(creategroup1.this, "Group Creation Failed!", Toast.LENGTH_LONG).show();
+                                                }
+                                            }
+                                        });
+
+                            }
+
+                            Intent intent = new Intent(creategroup1.this, Chats.class);
+                            startActivity(intent);
+                            finish();
+                        }
+
+                        else {
+                            Toast.makeText(creategroup1.this, "Group Creation Failed!", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+            }
+        });
     }
 
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
