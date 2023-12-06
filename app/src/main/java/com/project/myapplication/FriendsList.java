@@ -41,11 +41,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FriendsList extends AppCompatActivity {
+
     FirebaseAuth mAuth;
     DatabaseReference mDatabase;
+    String userId;
     RecyclerView friends_recycler;
     FriendsListAdapter friendsAdapter;
-    String userId;
     List<User1> UsersList;
     TextView request,friendText;
 
@@ -223,6 +224,7 @@ public class FriendsList extends AppCompatActivity {
                                         }
                                     }
                                 });
+                        break;
                     }
                 }
 

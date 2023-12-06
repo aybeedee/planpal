@@ -2,6 +2,7 @@ package com.project.myapplication;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,6 +46,8 @@ public class FriendsListAdapter extends RecyclerView.Adapter<FriendsListAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, @SuppressLint("RecyclerView") int position) {
+        User1 user = friendsList.get(position);
+        Log.d("user-in-rv", user.getId() + " " + user.getEmail() + " " + user.getFullName() + " " + user.getProfilePhotoUrl());
         holder.name.setText(friendsList.get(position).getFullName());
         holder.email.setText(friendsList.get(position).getEmail());
         Picasso.get().load(url + friendsList.get(position).getProfilePhotoUrl() + ".jpg").into(holder.profile_pic);

@@ -2,8 +2,12 @@ package com.project.myapplication;
 
 import static com.android.volley.Request.Method.POST;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -20,6 +24,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -28,6 +34,14 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -36,14 +50,29 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class creategroup1 extends AppCompatActivity {
 
+    FirebaseAuth mAuth;
+    DatabaseReference mDatabase;
+    String userId;
     Uri image;
     String encodedImage, imageName, pictureUrl;
     ImageView groupPhotoButton;
+    AppCompatButton createGroupButton;
+    EditText groupName, groupDescription, memberEmail;
+    ImageButton addMemberButton;
+
+    List<ObjectReference> groupMembers;
+
+    RecyclerView friends_recycler;
+    FriendsListAdapter friendsAdapter;
+    List<User1> groupMemberUsers;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +92,26 @@ public class creategroup1 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_creategroup1);
 
+        mAuth = FirebaseAuth.getInstance();
+        userId = mAuth.getUid().toString();
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
         groupPhotoButton = findViewById(R.id.circularBackground);
+        createGroupButton = findViewById(R.id.creategroupbutton);
+        groupName = findViewById(R.id.groupname);
+        groupDescription = findViewById(R.id.groupdesc);
+        memberEmail = findViewById(R.id.addmember);
+        addMemberButton = findViewById(R.id.plusButton);
+        friends_recycler = findViewById(R.id.groupMembersRV);
+
+        groupMembers = new ArrayList<>();
+        groupMemberUsers = new ArrayList<>();
+
+        friendsAdapter = new FriendsListAdapter(groupMemberUsers, creategroup1.this, userId);
+        friends_recycler.setAdapter(friendsAdapter);
+        RecyclerView.LayoutManager featuredLM = new LinearLayoutManager(creategroup1.this);
+        friends_recycler.setLayoutManager(featuredLM);
 
         groupPhotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,6 +122,102 @@ public class creategroup1 extends AppCompatActivity {
                 startActivityForResult(intent, 100);
             }
         });
+
+        addMemberButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+
+                String addMemberEmail = memberEmail.getText().toString();
+
+                mDatabase.child("users").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                        Boolean foundUser = false;
+                        String foundUserId = "";
+
+                        for (DataSnapshot userSnapshot : snapshot.getChildren()) {
+
+                            User1 userObject = userSnapshot.getValue(User1.class);
+                            Log.d("user-log", userObject.getEmail());
+
+                            if (addMemberEmail.equals(userObject.getEmail())) {
+
+                                foundUser = true;
+                                foundUserId = userObject.getId();
+
+                                String finalFoundUserId = foundUserId;
+
+                                mDatabase.child("userFriends").child(userId).addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                                        Boolean foundUserFriend = false;
+
+                                        for (DataSnapshot userFriendsSnapshot : snapshot.getChildren()) {
+
+                                            ObjectReference userFriendRef = userFriendsSnapshot.getValue(ObjectReference.class);
+
+                                            if (finalFoundUserId.equals(userFriendRef.getId())) {
+
+                                                foundUserFriend = true;
+
+                                                groupMembers.add(userFriendRef);
+                                                groupMemberUsers.add(userObject);
+                                                friendsAdapter.notifyDataSetChanged();
+
+                                                Toast.makeText(creategroup1.this, "User added: " + finalFoundUserId, Toast.LENGTH_LONG).show();
+
+                                                break;
+                                            }
+                                        }
+
+                                        if (!foundUserFriend) {
+
+                                            Toast.makeText(creategroup1.this, "user is not your friend!", Toast.LENGTH_LONG).show();
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+                                        Toast.makeText(creategroup1.this, "DB ERR: " + error.getMessage().toString(), Toast.LENGTH_LONG).show();
+                                    }
+                                });
+                                break;
+                            }
+                        }
+
+                        if (!foundUser) {
+                            Toast.makeText(creategroup1.this, "user email not found!", Toast.LENGTH_LONG).show();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(creategroup1.this, "DB ERR: " + error.getMessage().toString(), Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+        });
+
+//        createGroupButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                String groupId = mDatabase.child("groups").push().getKey();
+//
+//                Group group = new Group(groupId, groupName.getText().toString(), groupDescription.getText().toString(), pictureUrl);
+//
+//                mDatabase.child("groups").child(groupId).setValue(group).addOnCompleteListener(new OnCompleteListener<Void>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<Void> task) {
+//                        if (task.isSuccessful()) {
+//                        }
+//                    }
+//                });
+//            }
+//        });
     }
 
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -159,6 +303,12 @@ public class creategroup1 extends AppCompatActivity {
             result = uri.getLastPathSegment();
         }
         return result;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        setResult(RESULT_CANCELED);
     }
 
     public static void setWindowFlag(Activity activity, final int bits, boolean on) {
