@@ -43,7 +43,7 @@ public class Plans extends AppCompatActivity {
 
         newPlanButton = findViewById(R.id.newPlanButton);
 
-        Toast.makeText(Plans.this, getIntent().getStringExtra("groupId"), Toast.LENGTH_LONG).show();
+        groupId = getIntent().getStringExtra("groupId");
 
         newPlanButton.setOnClickListener(new View.OnClickListener() {
 

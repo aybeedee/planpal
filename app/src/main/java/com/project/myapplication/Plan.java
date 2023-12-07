@@ -6,6 +6,7 @@ public class Plan {
     String name;
     String location;
     String date;
+    Long timestamp;
     String startTime;
     String endTime;
     Integer attendingCount;
@@ -13,11 +14,12 @@ public class Plan {
 
     public Plan() {}
 
-    public Plan(String id, String name, String location, String date, String startTime, String endTime, Integer attendingCount, Integer notAttendingCount) {
+    public Plan(String id, String name, String location, String date, Long timestamp, String startTime, String endTime, Integer attendingCount, Integer notAttendingCount) {
         this.id = id;
         this.name = name;
         this.location = location;
         this.date = date;
+        this.timestamp = timestamp;
         this.startTime = startTime;
         this.endTime = endTime;
         this.attendingCount = attendingCount;
@@ -54,6 +56,14 @@ public class Plan {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public Long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Long timestamp) {
+        this.timestamp = timestamp;
     }
 
     public String getStartTime() {

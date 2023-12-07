@@ -1,5 +1,6 @@
 package com.project.myapplication;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
@@ -16,13 +17,27 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class PostPlan extends AppCompatActivity {
 
+    DatabaseReference mDatabase;
+
     TextView dateEditText, startTimeEditText, endTimeEditText;
     AppCompatButton createPlanButton;
+    EditText planNameEditText, locationEditText;
+
+    String groupId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +65,12 @@ public class PostPlan extends AppCompatActivity {
         startTimeEditText = findViewById(R.id.startTimeEditText);
         endTimeEditText = findViewById(R.id.endTimeEditText);
         createPlanButton = findViewById(R.id.createPlanButton);
+        planNameEditText = findViewById(R.id.planNameEditText);
+        locationEditText = findViewById(R.id.locationEditText);
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        groupId = getIntent().getStringExtra("groupId");
 
         dateEditText.setOnClickListener(new View.OnClickListener() {
 
@@ -123,6 +144,73 @@ public class PostPlan extends AppCompatActivity {
                 timePickerDialog.show();
                 timePickerDialog.getButton(DatePickerDialog.BUTTON_NEGATIVE).setTextColor(Color.rgb(93, 57, 201));
                 timePickerDialog.getButton(DatePickerDialog.BUTTON_POSITIVE).setTextColor(Color.rgb(93, 57, 201));
+            }
+        });
+
+        createPlanButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+
+                String planId = mDatabase.child("plans").push().getKey();
+
+                String planName = planNameEditText.getText().toString();
+                String planLocation = locationEditText.getText().toString();
+                String planDate = dateEditText.getText().toString();
+                String planStartTime = startTimeEditText.getText().toString();
+                String planEndTime = endTimeEditText.getText().toString();
+
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+
+                Date date = null;
+
+                try {
+
+                    date = dateFormat.parse(planDate);
+
+                }
+
+                catch (ParseException e) {
+
+                    e.printStackTrace();
+                }
+
+                Long planTimestamp = date.getTime();
+
+                Plan plan = new Plan(planId, planName, planLocation, planDate, planTimestamp, planStartTime, planEndTime, 0, 0);
+
+                // add new plan to database
+                mDatabase.child("plans").child(planId).setValue(plan).addOnCompleteListener(new OnCompleteListener<Void>() {
+
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+
+                        if (task.isSuccessful()) {
+
+                            mDatabase.child("groupPlans").child(groupId).child(planId).child("id").setValue(planId).addOnCompleteListener(new OnCompleteListener<Void>() {
+
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+
+                                    if (task.isSuccessful()) {
+
+                                        Toast.makeText(PostPlan.this, "Plan Created Successfully", Toast.LENGTH_LONG).show();
+                                    }
+
+                                    else {
+
+                                        Toast.makeText(PostPlan.this, "Plan Creation Failed!", Toast.LENGTH_LONG).show();
+                                    }
+                                }
+                            });
+                        }
+
+                        else {
+
+                            Toast.makeText(PostPlan.this, "Plan Creation Failed!", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
             }
         });
     }
