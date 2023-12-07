@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
         Button signupButton = findViewById(R.id.Signupbutton);
         Button loginButton = findViewById(R.id.loginbutton);
-        TextInputLayout email = findViewById(R.id.email);
+        TextInputEditText email = findViewById(R.id.email_edit_text);
         TextInputEditText emailEditText = email.findViewById(R.id.email_edit_text);
         TextInputEditText passwordEditText = findViewById(R.id.password_edit_text);
         ImageButton toggleButton = findViewById(R.id.toggle_button);

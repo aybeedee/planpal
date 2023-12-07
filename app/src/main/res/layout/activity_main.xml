@@ -138,7 +138,8 @@
                     android:src="@drawable/baseline_remove_red_eye_24"
                     android:background="?android:attr/selectableItemBackground"
                     android:contentDescription="Toggle password visibility"
-                    android:onClick="togglePasswordVisibility" />
+                    android:onClick="togglePasswordVisibility"
+                    android:layout_marginRight="10dp" />
             </FrameLayout>
         </com.google.android.material.textfield.TextInputLayout>
 

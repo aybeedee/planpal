@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">PlanPal</string>
-    <string name="ip_addr">172.16.22.209</string>
+<!--    <string name="ip_addr">172.16.22.209</string>-->
 </resources>

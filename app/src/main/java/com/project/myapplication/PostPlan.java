@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,12 +14,13 @@ import android.view.WindowManager;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import java.util.Calendar;
 
 public class PostPlan extends AppCompatActivity {
 
-    TextView dateEditText;
+    TextView dateEditText, startTimeEditText, endTimeEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +45,8 @@ public class PostPlan extends AppCompatActivity {
         setContentView(R.layout.activity_postplan);
 
         dateEditText = findViewById(R.id.dateEditText);
+        startTimeEditText = findViewById(R.id.startTimeEditText);
+        endTimeEditText = findViewById(R.id.endTimeEditText);
 
         dateEditText.setOnClickListener(new View.OnClickListener() {
 
@@ -68,6 +72,54 @@ public class PostPlan extends AppCompatActivity {
                 datePickerDialog.show();
                 datePickerDialog.getButton(DatePickerDialog.BUTTON_NEGATIVE).setTextColor(Color.rgb(93, 57, 201));
                 datePickerDialog.getButton(DatePickerDialog.BUTTON_POSITIVE).setTextColor(Color.rgb(93, 57, 201));
+            }
+        });
+
+        startTimeEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                final Calendar c = Calendar.getInstance();
+
+                int hour = c.get(Calendar.HOUR_OF_DAY);
+                int minute = c.get(Calendar.MINUTE);
+
+                TimePickerDialog timePickerDialog = new TimePickerDialog(PostPlan.this, R.style.DialogTheme, new TimePickerDialog.OnTimeSetListener() {
+
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+
+                                startTimeEditText.setText(hourOfDay + ":" + minute);
+                            }
+                        }, hour, minute, false);
+
+                timePickerDialog.show();
+                timePickerDialog.getButton(DatePickerDialog.BUTTON_NEGATIVE).setTextColor(Color.rgb(93, 57, 201));
+                timePickerDialog.getButton(DatePickerDialog.BUTTON_POSITIVE).setTextColor(Color.rgb(93, 57, 201));
+            }
+        });
+
+        endTimeEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                final Calendar c = Calendar.getInstance();
+
+                int hour = c.get(Calendar.HOUR_OF_DAY);
+                int minute = c.get(Calendar.MINUTE);
+
+                TimePickerDialog timePickerDialog = new TimePickerDialog(PostPlan.this, R.style.DialogTheme, new TimePickerDialog.OnTimeSetListener() {
+
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+
+                        endTimeEditText.setText(hourOfDay + ":" + minute);
+                    }
+                }, hour, minute, false);
+
+                timePickerDialog.show();
+                timePickerDialog.getButton(DatePickerDialog.BUTTON_NEGATIVE).setTextColor(Color.rgb(93, 57, 201));
+                timePickerDialog.getButton(DatePickerDialog.BUTTON_POSITIVE).setTextColor(Color.rgb(93, 57, 201));
             }
         });
     }

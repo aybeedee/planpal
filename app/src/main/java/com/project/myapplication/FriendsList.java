@@ -81,9 +81,7 @@ public class FriendsList extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-//                final AlertDialog alertDialog = new AlertDialog.Builder(FriendsList.this).create();
-//                alertDialog.getWindow().setBackgroundDrawableResource(android.R.color.white);
-                Dialog dialog = new Dialog(FriendsList.this);
+                Dialog dialog = new Dialog(FriendsList.this, R.style.DialogTheme);
                 View customLayout = getLayoutInflater().inflate(R.layout.add_friend_dialouge, null);
 
                 Button addFriendButton = customLayout.findViewById(R.id.addFriendButton);

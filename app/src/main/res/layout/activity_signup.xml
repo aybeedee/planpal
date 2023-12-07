@@ -166,8 +166,10 @@
                     android:background="?android:attr/selectableItemBackground"
                     android:contentDescription="Toggle password visibility"
                     android:onClick="togglePasswordVisibility"
-                    android:layout_marginRight="10dp"/>
+                    android:layout_marginRight="10dp" />
+
             </FrameLayout>
+
         </com.google.android.material.textfield.TextInputLayout>
 
 
