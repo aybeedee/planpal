@@ -53,6 +53,7 @@ public class IncomingRequestsAdapter extends RecyclerView.Adapter<IncomingReques
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
         User1 incomingUser = userList.get(position);
+        String incomingUserId = incomingUser.getId();
 
         holder.name.setText(incomingUser.getFullName());
         Picasso.get().load(url + incomingUser.getProfilePhotoUrl() + ".jpg").into(holder.profile_pic);
@@ -62,7 +63,6 @@ public class IncomingRequestsAdapter extends RecyclerView.Adapter<IncomingReques
             @Override
             public void onClick(View view) {
 
-                String incomingUserId = incomingUser.getId();
                 DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
 
                 // add friend to user's friends list
@@ -86,6 +86,8 @@ public class IncomingRequestsAdapter extends RecyclerView.Adapter<IncomingReques
 
                                         // remove request from outgoing of friend
                                         mDatabase.child("userRequestsOutgoing").child(incomingUserId).child(userId).removeValue();
+
+                                        Toast.makeText(context, "Request Accepted Successfully!", Toast.LENGTH_LONG).show();
                                     }
 
                                     else {
@@ -103,6 +105,23 @@ public class IncomingRequestsAdapter extends RecyclerView.Adapter<IncomingReques
                 });
             }
         });
+
+        holder.rejectRequest.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+
+                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+
+                // remove from receiver's incoming requests list
+                mDatabase.child("userRequestsIncoming").child(userId).child(incomingUserId).removeValue();
+
+                // remove from sender's outgoing requests list
+                mDatabase.child("userRequestsOutgoing").child(incomingUserId).child(userId).removeValue();
+
+                Toast.makeText(context, "Request Rejected", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     @Override
@@ -111,15 +130,20 @@ public class IncomingRequestsAdapter extends RecyclerView.Adapter<IncomingReques
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
+
         TextView name;
         ImageView profile_pic;
         ImageButton acceptRequest;
+        ImageButton rejectRequest;
 
         public MyViewHolder(@NonNull View itemView) {
+
             super(itemView);
+
             name = itemView.findViewById(R.id.requestUserName);
             profile_pic = itemView.findViewById(R.id.profile_pic);
             acceptRequest = itemView.findViewById(R.id.acceptButton);
+            rejectRequest = itemView.findViewById(R.id.rejectButton);
         }
     }
 }

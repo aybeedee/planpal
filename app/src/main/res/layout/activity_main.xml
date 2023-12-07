@@ -154,7 +154,7 @@
             android:text="Login"
             android:textColor="#FFFFFF"
             android:layout_marginTop="15dp"
-            android:layout_marginLeft="80dp"
+            android:layout_gravity="center_horizontal"
             android:background="@drawable/round_button"
             ></androidx.appcompat.widget.AppCompatButton>
 
@@ -163,29 +163,33 @@
 
 
 
-        <TextView
-            android:id="@+id/account"
-            android:layout_marginTop="680dp"
-            android:layout_marginLeft="100dp"
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_alignParentBottom="true"
+            >
 
-            android:text="Don't have an account?"
-            android:textColor="#000000"
-            android:textSize="16sp"
-            />
+            <TextView
+                android:id="@+id/account"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
 
-        <Button
-            android:id="@+id/Signupbutton"
-            android:layout_toRightOf="@+id/account"
-            android:layout_width="wrap_content"
-            android:layout_marginTop="667dp"
-            android:layout_marginLeft="-20dp"
-            android:layout_height="wrap_content"
-            android:text="Sign Up"
-            android:textColor="#5D39C9"
-            android:background="@android:color/transparent"
-            ></Button>
+                android:text="Don't have an account?"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                />
+
+            <Button
+                android:id="@+id/Signupbutton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sign Up"
+                android:textColor="#5D39C9"
+                android:background="@android:color/transparent"
+                ></Button>
+        </LinearLayout>
 
 
 
