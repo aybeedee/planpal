@@ -6,6 +6,8 @@ public class Group {
     String description;
     String groupPhotoUrl;
 
+    public Group() {}
+
     public Group(String id, String name, String description, String groupPhotoUrl) {
         this.id = id;
         Name = name;
