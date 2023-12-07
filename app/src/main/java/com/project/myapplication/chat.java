@@ -6,6 +6,7 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -71,8 +72,9 @@ public class chat extends AppCompatActivity {
 
     ImageView groupPhoto;
     TextView groupName;
-    ImageButton sendButton, addImageButton;
+    ImageButton sendButton, addImageButton, backButton;
     EditText messageTextInput;
+    AppCompatButton plansButton;
 
     RecyclerView messagesRV;
     MessagesAdapter messageAdapter;
@@ -104,6 +106,8 @@ public class chat extends AppCompatActivity {
         groupPhoto = findViewById(R.id.groupPhoto);
         sendButton = findViewById(R.id.sendButton);
         addImageButton = findViewById(R.id.addImageButton);
+        backButton = findViewById(R.id.backButton);
+        plansButton = findViewById(R.id.plansButton);
         messageTextInput = findViewById(R.id.messageEditText);
         messagesRV = findViewById(R.id.chatRecyclerView);
 
@@ -230,12 +234,24 @@ public class chat extends AppCompatActivity {
             }
         });
 
+        plansButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(chat.this, Plans.class);
+                intent.putExtra("groupId", groupId);
+                startActivity(intent);
+            }
+        });
+
         getOnBackPressedDispatcher().addCallback(chat.this, new OnBackPressedCallback(true) {
 
             @Override
             public void handleOnBackPressed() {
 
                 setResult(RESULT_CANCELED);
+                finish();
             }
         });
     }

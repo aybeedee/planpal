@@ -4,42 +4,57 @@
     android:layout_height="match_parent"
     android:background="#5D39C9">
 
-
-    <ImageView
-        android:id="@+id/ellipse1"
-        android:layout_width="100dp"
-        android:layout_height="30dp"
+    <LinearLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:orientation="horizontal"
         android:layout_marginTop="30dp"
-        android:layout_centerHorizontal="true"
-        android:background="@drawable/img_8"
-        ></ImageView>
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_centerInParent="true">
 
-    <ImageView
-        android:id="@+id/profileImage"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:layout_marginTop="35dp"
-        android:layout_marginLeft="20dp"
-        android:src="@drawable/back_arrow"
-        ></ImageView>
+        <ImageView
+            android:id="@+id/profileImage"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/back_arrow"
+            android:layout_gravity="center"
+            ></ImageView>
 
-    <Button
-        android:id="@+id/plansButton"
-        android:layout_width="wrap_content"
-        android:layout_height="45dp"
-        android:layout_marginLeft="300dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="24dp"
-        android:text="NEW"
-        android:textStyle="bold"
-        android:textSize="18dp"
-        android:background="@drawable/oval_button"
-        android:textColor="#5D39C9" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center">
 
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="30dp"
+                android:background="@drawable/img_8" />
+
+        </LinearLayout>
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/newPlanButton"
+            android:layout_width="48dp"
+            android:layout_height="32dp"
+            android:text="NEW"
+            android:textStyle="bold"
+            android:textColor="#5D39C9"
+            android:background="@drawable/oval_button"
+            android:layout_gravity="center" />
+
+    </LinearLayout>
 
     <EditText
         android:drawableLeft="@drawable/baseline_search_24"
-        android:layout_below="@+id/ellipse1"
+        android:layout_below="@+id/header"
         android:layout_marginTop="30dp"
         android:paddingLeft="20dp"
         android:layout_centerHorizontal="true"
@@ -63,13 +78,14 @@
         <TextView
             android:id="@+id/chat"
             android:layout_marginTop="10dp"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:text="Plans"
             android:textStyle="bold"
             android:textSize="24sp"
-            />
+            android:gravity="center"
+            android:textAlignment="center" />
 
 
         <androidx.recyclerview.widget.RecyclerView
