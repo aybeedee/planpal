@@ -31,12 +31,14 @@ public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     List<Message> messagesList;
     Context context;
     String userId;
+    String imageServerURL;
 
     public MessagesAdapter(List<Message> messagesList, Context context, String userId) {
 
         this.messagesList = messagesList;
         this.context = context;
         this.userId = userId;
+        this.imageServerURL = "http://" + context.getString(R.string.ip_addr);
     }
 
     @NonNull
@@ -55,35 +57,20 @@ public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         else if (viewType == 2) {
 
-            return new SenderVidVH(LayoutInflater.from(context).inflate(R.layout.message_sent_vid_component, parent, false));
-        }
-
-        else if (viewType == 3) {
-
             return new ReceiverTextVH(LayoutInflater.from(context).inflate(R.layout.message_received_component, parent, false));
         }
 
-        else if (viewType == 4) {
-
-            return new ReceiverImgVH(LayoutInflater.from(context).inflate(R.layout.message_received_img_component, parent, false));
-        }
-
-        return new ReceiverVidVH(LayoutInflater.from(context).inflate(R.layout.message_received_video_component, parent, false));
+        return new ReceiverImgVH(LayoutInflater.from(context).inflate(R.layout.message_received_img_component, parent, false));
     }
 
     @Override
     public int getItemViewType(int position) {
 
-        if (messageList.get(position).getSenderId().equals(userId)) {
+        if (messagesList.get(position).getSenderId().equals(userId)) {
 
-            if (messageList.get(position).getText().equals("")) {
+            if (messagesList.get(position).getText().equals("")) {
 
-                if (messageList.get(position).getImageUrl().equals("")) {
-
-                    return 2;
-                }
-
-                else {
+                if (!messagesList.get(position).getImageUrl().equals("")) {
 
                     return 1;
                 }
@@ -97,24 +84,21 @@ public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         else {
 
-            if (messageList.get(position).getText().equals("")) {
+            if (messagesList.get(position).getText().equals("")) {
 
-                if (messageList.get(position).getImageUrl().equals("")) {
+                if (!messagesList.get(position).getImageUrl().equals("")) {
 
-                    return 5;
-                }
-
-                else {
-
-                    return 4;
+                    return 3;
                 }
             }
 
             else {
 
-                return 3;
+                return 2;
             }
         }
+
+        return -1;
     }
 
     @Override
@@ -124,9 +108,8 @@ public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
             SenderTextVH senderTextVH = (SenderTextVH) holder;
 
-            String messageId = messageList.get(position).getMessageId();
-            String text = messageList.get(position).getText();
-            Long timestamp = messageList.get(position).getTimestamp();
+            String text = messagesList.get(position).getText();
+            Long timestamp = messagesList.get(position).getTimestamp();
 
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
             Date date = new Date(timestamp);
@@ -134,80 +117,30 @@ public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
             senderTextVH.text.setText(text);
             senderTextVH.time.setText(formattedTime);
-
-            senderTextVH.delete.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View view) {
-
-                    DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-
-                    // remove from messages
-                    mDatabase.child("messages").child(messageId).removeValue();
-
-                    Toast.makeText(context, "Message Deleted", Toast.LENGTH_LONG).show();
-                }
-            });
         }
 
         else if (holder.getItemViewType() == 1) {
 
             SenderImgVH senderImgVH = (SenderImgVH) holder;
 
-            String imageUrl = messageList.get(position).getImageUrl();
-            Long timestamp = messageList.get(position).getTimestamp();
+            String imageUrl = messagesList.get(position).getImageUrl();
+            Long timestamp = messagesList.get(position).getTimestamp();
 
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
             Date date = new Date(timestamp);
             String formattedTime = simpleDateFormat.format(date);
 
-            Picasso.get().load(imageUrl).into(senderImgVH.img);
+            Picasso.get().load(imageServerURL + imageUrl + ".jpg").into(senderImgVH.img);
             senderImgVH.time.setText(formattedTime);
         }
 
         else if (holder.getItemViewType() == 2) {
 
-            SenderVidVH senderVidVH = (SenderVidVH) holder;
-
-            String videoUrl = messageList.get(position).getVideoUrl();
-            Long timestamp = messageList.get(position).getTimestamp();
-
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
-            Date date = new Date(timestamp);
-            String formattedTime = simpleDateFormat.format(date);
-
-            Uri uri = Uri.parse(videoUrl);
-            senderVidVH.vid.setVideoURI(uri);
-            senderVidVH.vid.start();
-            senderVidVH.time.setText(formattedTime);
-
-            senderVidVH.vid.setOnTouchListener(new View.OnTouchListener() {
-
-                @Override
-                public boolean onTouch(View view, MotionEvent motionEvent) {
-
-                    if (senderVidVH.vid.isPlaying()) {
-
-                        senderVidVH.vid.pause();
-                    }
-
-                    else {
-
-                        senderVidVH.vid.resume();
-                    }
-
-                    return true;
-                }
-            });
-        }
-
-        else if (holder.getItemViewType() == 3) {
-
             ReceiverTextVH receiverTextVH = (ReceiverTextVH) holder;
 
-            String senderId = messageList.get(position).getSenderId();
-            String text = messageList.get(position).getText();
-            Long timestamp = messageList.get(position).getTimestamp();
+            String senderId = messagesList.get(position).getSenderId();
+            String text = messagesList.get(position).getText();
+            Long timestamp = messagesList.get(position).getTimestamp();
 
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
             Date date = new Date(timestamp);
@@ -222,8 +155,8 @@ public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
                     if (task.isSuccessful()) {
 
-                        User userObject = task.getResult().getValue(User.class);
-                        Picasso.get().load(userObject.getProfilePhotoUrl()).into(receiverTextVH.profilePhoto);
+                        User1 userObject = task.getResult().getValue(User1.class);
+                        receiverTextVH.senderName.setText(userObject.getFullName());
                     }
 
                     else {
@@ -237,13 +170,13 @@ public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             receiverTextVH.time.setText(formattedTime);
         }
 
-        else if (holder.getItemViewType() == 4) {
+        else {
 
             ReceiverImgVH receiverImgVH = (ReceiverImgVH) holder;
 
-            String senderId = messageList.get(position).getSenderId();
-            String imageUrl = messageList.get(position).getImageUrl();
-            Long timestamp = messageList.get(position).getTimestamp();
+            String senderId = messagesList.get(position).getSenderId();
+            String imageUrl = messagesList.get(position).getImageUrl();
+            Long timestamp = messagesList.get(position).getTimestamp();
 
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
             Date date = new Date(timestamp);
@@ -258,8 +191,8 @@ public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
                     if (task.isSuccessful()) {
 
-                        User userObject = task.getResult().getValue(User.class);
-                        Picasso.get().load(userObject.getProfilePhotoUrl()).into(receiverImgVH.profilePhoto);
+                        User1 userObject = task.getResult().getValue(User1.class);
+                        receiverImgVH.senderName.setText(userObject.getFullName());
                     }
 
                     else {
@@ -269,65 +202,8 @@ public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 }
             });
 
-            Picasso.get().load(imageUrl).into(receiverImgVH.img);
+            Picasso.get().load(imageServerURL + imageUrl + ".jpg").into(receiverImgVH.img);
             receiverImgVH.time.setText(formattedTime);
-        }
-
-        else {
-
-            ReceiverVidVH receiverVidVH = (ReceiverVidVH) holder;
-
-            String senderId = messageList.get(position).getSenderId();
-            String videoUrl = messageList.get(position).getVideoUrl();
-            Long timestamp = messageList.get(position).getTimestamp();
-
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
-            Date date = new Date(timestamp);
-            String formattedTime = simpleDateFormat.format(date);
-
-            DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-
-            mDatabase.child("users").child(senderId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-
-                @Override
-                public void onComplete(@NonNull Task<DataSnapshot> task) {
-
-                    if (task.isSuccessful()) {
-
-                        User userObject = task.getResult().getValue(User.class);
-                        Picasso.get().load(userObject.getProfilePhotoUrl()).into(receiverVidVH.profilePhoto);
-                    }
-
-                    else {
-
-                        Toast.makeText(context, "Could not fetch user", Toast.LENGTH_LONG).show();
-                    }
-                }
-            });
-
-            Uri uri = Uri.parse(videoUrl);
-            receiverVidVH.vid.setVideoURI(uri);
-            receiverVidVH.vid.start();
-            receiverVidVH.time.setText(formattedTime);
-
-            receiverVidVH.vid.setOnTouchListener(new View.OnTouchListener() {
-
-                @Override
-                public boolean onTouch(View view, MotionEvent motionEvent) {
-
-                    if (receiverVidVH.vid.isPlaying()) {
-
-                        receiverVidVH.vid.pause();
-                    }
-
-                    else {
-
-                        receiverVidVH.vid.resume();
-                    }
-
-                    return true;
-                }
-            });
         }
     }
 
@@ -340,15 +216,14 @@ public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     // viewType 0
     public class SenderTextVH extends RecyclerView.ViewHolder {
 
-        TextView time, text, delete;
+        TextView time, text;
 
         public SenderTextVH(@NonNull View itemView) {
 
             super(itemView);
 
-            time = itemView.findViewById(R.id.time);
+            time = itemView.findViewById(R.id.timestamp);
             text = itemView.findViewById(R.id.text);
-            delete = itemView.findViewById(R.id.delete);
         }
     }
 
@@ -362,7 +237,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
             super(itemView);
 
-            time = itemView.findViewById(R.id.time);
+            time = itemView.findViewById(R.id.timestamp);
             img = itemView.findViewById(R.id.img);
         }
     }
@@ -370,31 +245,30 @@ public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     // viewType 2
     public class ReceiverTextVH extends RecyclerView.ViewHolder {
 
-        TextView time, text;
-        ImageView profilePhoto;
+        TextView senderName, time, text;
 
         public ReceiverTextVH(@NonNull View itemView) {
 
             super(itemView);
 
-            time = itemView.findViewById(R.id.time);
+            senderName = itemView.findViewById(R.id.senderName);
+            time = itemView.findViewById(R.id.timestamp);
             text = itemView.findViewById(R.id.text);
-            profilePhoto = itemView.findViewById(R.id.profilePhoto);
         }
     }
 
     // viewType 3
     public class ReceiverImgVH extends RecyclerView.ViewHolder {
 
-        TextView time;
-        ImageView profilePhoto, img;
+        TextView senderName, time;
+        ImageView img;
 
         public ReceiverImgVH(@NonNull View itemView) {
 
             super(itemView);
 
-            time = itemView.findViewById(R.id.time);
-            profilePhoto = itemView.findViewById(R.id.profilePhoto);
+            senderName = itemView.findViewById(R.id.senderName);
+            time = itemView.findViewById(R.id.timestamp);
             img = itemView.findViewById(R.id.img);
         }
     }

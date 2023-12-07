@@ -67,7 +67,7 @@ public class chat extends AppCompatActivity {
     String text, imageUrl;
 
     Uri image;
-    String encodedImage, imageName, pictureUrl;
+    String encodedImage, imageName;
 
     ImageView groupPhoto;
     TextView groupName;
@@ -105,6 +105,7 @@ public class chat extends AppCompatActivity {
         sendButton = findViewById(R.id.sendButton);
         addImageButton = findViewById(R.id.addImageButton);
         messageTextInput = findViewById(R.id.messageEditText);
+        messagesRV = findViewById(R.id.chatRecyclerView);
 
         mAuth = FirebaseAuth.getInstance();
         userId = mAuth.getUid().toString();
@@ -261,9 +262,9 @@ public class chat extends AppCompatActivity {
                                 try {
                                     JSONObject res = new JSONObject(response);
                                     if (res.getInt("status") == 1) {
-                                        pictureUrl = "/planpal/pictures/" + imageName;
-                                        Log.d("PictureURL", pictureUrl);
-                                        Toast.makeText(chat.this, pictureUrl, Toast.LENGTH_LONG).show();
+                                        imageUrl = "/planpal/pictures/" + imageName;
+                                        Log.d("PictureURL", imageUrl);
+                                        Toast.makeText(chat.this, imageUrl, Toast.LENGTH_LONG).show();
                                     } else {
                                         Toast.makeText(chat.this, res.getString("message"), Toast.LENGTH_LONG).show();
                                     }
