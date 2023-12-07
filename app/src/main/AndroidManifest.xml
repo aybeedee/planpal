@@ -29,7 +29,7 @@
             android:name=".ProfileViewSelf"
             android:exported="false" />
         <activity
-            android:name=".Postplan"
+            android:name=".PostPlan"
             android:exported="false" />
         <activity
             android:name=".Plans"

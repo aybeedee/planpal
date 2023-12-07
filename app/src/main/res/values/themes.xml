@@ -13,4 +13,7 @@
     </style>
 
     <style name="Theme.Project" parent="Base.Theme.Project" />
+    <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/primary_purple</item>
+    </style>
 </resources>

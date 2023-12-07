@@ -1,23 +1,24 @@
 package com.project.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatButton;
 
 import android.app.Activity;
-import android.content.Intent;
+import android.app.DatePickerDialog;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Toast;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.TextView;
 
-public class Plans extends AppCompatActivity {
+import java.util.Calendar;
 
-    String groupId;
+public class PostPlan extends AppCompatActivity {
 
-    AppCompatButton newPlanButton;
+    TextView dateEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,20 +40,34 @@ public class Plans extends AppCompatActivity {
         }
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_plans);
+        setContentView(R.layout.activity_postplan);
 
-        newPlanButton = findViewById(R.id.newPlanButton);
+        dateEditText = findViewById(R.id.dateEditText);
 
-        Toast.makeText(Plans.this, getIntent().getStringExtra("groupId"), Toast.LENGTH_LONG).show();
-
-        newPlanButton.setOnClickListener(new View.OnClickListener() {
+        dateEditText.setOnClickListener(new View.OnClickListener() {
 
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
 
-                Intent intent = new Intent(Plans.this, PostPlan.class);
-                intent.putExtra("groupId", groupId);
-                startActivity(intent);
+                final Calendar c = Calendar.getInstance();
+
+                int year = c.get(Calendar.YEAR);
+                int month = c.get(Calendar.MONTH);
+                int day = c.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog datePickerDialog = new DatePickerDialog(PostPlan.this, R.style.DialogTheme, new DatePickerDialog.OnDateSetListener() {
+
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+
+                        dateEditText.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                    }
+                },
+                year, month, day);
+
+                datePickerDialog.show();
+                datePickerDialog.getButton(DatePickerDialog.BUTTON_NEGATIVE).setTextColor(Color.rgb(93, 57, 201));
+                datePickerDialog.getButton(DatePickerDialog.BUTTON_POSITIVE).setTextColor(Color.rgb(93, 57, 201));
             }
         });
     }

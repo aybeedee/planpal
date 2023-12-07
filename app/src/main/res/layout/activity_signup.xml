@@ -96,7 +96,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/rounded_box"
             android:hint="Full Name"
-            android:padding="20dp"
+            android:padding="15dp"
             android:textColor="#000000"
             />
 
@@ -116,7 +116,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/rounded_box"
             android:hint="Email Address"
-            android:padding="20dp"
+            android:padding="15dp"
             android:inputType="textEmailAddress"
             android:id="@+id/email"
             android:textColor="#000000"/>
@@ -138,19 +138,24 @@
             android:hint="Password"
             android:layout_marginTop="10dp"
             android:id="@+id/password"
-            >
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical">
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/rounded_box">
+                android:background="@drawable/rounded_box"
+                android:layout_gravity="start|center_vertical">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
                     android:hint="Password"
                     android:id="@+id/password_edit_text"
-                    android:textColor="#000000"/>
+                    android:textColor="#000000"
+                    android:textSize="19sp"
+                    android:layout_gravity="center_vertical"
+                    android:padding="15dp"/>
 
                 <ImageButton
                     android:id="@+id/toggle_button"
@@ -161,7 +166,7 @@
                     android:background="?android:attr/selectableItemBackground"
                     android:contentDescription="Toggle password visibility"
                     android:onClick="togglePasswordVisibility"
-                    android:layout_marginRight="5dp"/>
+                    android:layout_marginRight="10dp"/>
             </FrameLayout>
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -173,7 +178,7 @@
             android:layout_height="50dp"
             android:text="Sign Up"
             android:textColor="#FFFFFF"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="25dp"
             android:background="@drawable/round_button"
             />
 

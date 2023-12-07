@@ -67,26 +67,33 @@
             android:layout_marginLeft="16dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="E-mail"
+            android:text="Email"
             android:textSize="16sp"
             />
 
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Your Email"
+            android:hint="Password"
             android:layout_margin="16dp"
             app:boxBackgroundMode="outline"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_box">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:id="@+id/email_edit_text"
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
-                />
+                android:background="@drawable/rounded_box"
+                android:hint="Your Email"/>
+
+            </FrameLayout>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -113,7 +120,8 @@
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_box">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
