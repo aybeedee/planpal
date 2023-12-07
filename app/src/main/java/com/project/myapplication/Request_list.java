@@ -7,9 +7,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -43,8 +48,21 @@ public class Request_list extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (Build.VERSION.SDK_INT >= 19 && Build.VERSION.SDK_INT < 21) {
+            setWindowFlag(this, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, true);
+        }
+        if (Build.VERSION.SDK_INT >= 19) {
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        }
+
+        if (Build.VERSION.SDK_INT >= 21) {
+            setWindowFlag(this, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, false);
+            getWindow().setStatusBarColor(Color.TRANSPARENT);
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request_list);
+
         request=findViewById(R.id.requestsText);
         friendText=findViewById(R.id.friendsText);
         mAuth = FirebaseAuth.getInstance();
@@ -107,7 +125,21 @@ public class Request_list extends AppCompatActivity {
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String previousChildName) {}
             @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {}
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                User1 userObject = dataSnapshot.getValue(User1.class);
+
+                for (int i = 0; i < UsersList.size(); i++) {
+
+                    if (UsersList.get(i).getId().equals(userObject.getId())) {
+
+                        UsersList.remove(i);
+                        incomingAdapter.notifyDataSetChanged();
+
+                        break;
+                    }
+                }
+            }
             @Override
             public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String previousChildName) {}
             @Override
@@ -160,18 +192,26 @@ public class Request_list extends AppCompatActivity {
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String previousChildName) {}
             @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {}
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                User1 userObject = dataSnapshot.getValue(User1.class);
+
+                for (int i = 0; i < UsersList2.size(); i++) {
+
+                    if (UsersList2.get(i).getId().equals(userObject.getId())) {
+
+                        UsersList2.remove(i);
+                        outgoingAdapter.notifyDataSetChanged();
+
+                        break;
+                    }
+                }
+            }
             @Override
             public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String previousChildName) {}
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {}
         });
-
-
-
-
-
-
 
         request.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -188,5 +228,16 @@ public class Request_list extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    public static void setWindowFlag(Activity activity, final int bits, boolean on) {
+        Window win = activity.getWindow();
+        WindowManager.LayoutParams winParams = win.getAttributes();
+        if (on) {
+            winParams.flags |= bits;
+        } else {
+            winParams.flags &= ~bits;
+        }
+        win.setAttributes(winParams);
     }
 }

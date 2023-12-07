@@ -7,11 +7,18 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -44,8 +51,58 @@ public class IncomingRequestsAdapter extends RecyclerView.Adapter<IncomingReques
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.name.setText(userList.get(position).getFullName());
-        Picasso.get().load(url + userList.get(position).getProfilePhotoUrl() + ".jpg").into(holder.profile_pic);
+
+        User1 incomingUser = userList.get(position);
+
+        holder.name.setText(incomingUser.getFullName());
+        Picasso.get().load(url + incomingUser.getProfilePhotoUrl() + ".jpg").into(holder.profile_pic);
+
+        holder.acceptRequest.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+
+                String incomingUserId = incomingUser.getId();
+                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+
+                // add friend to user's friends list
+                mDatabase.child("userFriends").child(userId).child(incomingUserId).child("id").setValue(incomingUserId).addOnCompleteListener(new OnCompleteListener<Void>() {
+
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+
+                        if (task.isSuccessful()) {
+
+                            // add user to friend's friends list
+                            mDatabase.child("userFriends").child(incomingUserId).child(userId).child("id").setValue(userId).addOnCompleteListener(new OnCompleteListener<Void>() {
+
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+
+                                    if (task.isSuccessful()) {
+
+                                        // remove request from incoming of user
+                                        mDatabase.child("userRequestsIncoming").child(userId).child(incomingUserId).removeValue();
+
+                                        // remove request from outgoing of friend
+                                        mDatabase.child("userRequestsOutgoing").child(incomingUserId).child(userId).removeValue();
+                                    }
+
+                                    else {
+                                        Toast.makeText(context, "Request Accept Failed!", Toast.LENGTH_LONG).show();
+                                    }
+                                }
+                            });
+                        }
+
+                        else {
+
+                            Toast.makeText(context, "Request Accept Failed!", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+            }
+        });
     }
 
     @Override
@@ -56,11 +113,13 @@ public class IncomingRequestsAdapter extends RecyclerView.Adapter<IncomingReques
     public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView name;
         ImageView profile_pic;
+        ImageButton acceptRequest;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.requestUserName);
             profile_pic = itemView.findViewById(R.id.profile_pic);
+            acceptRequest = itemView.findViewById(R.id.acceptButton);
         }
     }
 }

@@ -49,7 +49,7 @@
                 android:id="@+id/cancel"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_marginLeft="150dp"
+                android:layout_marginLeft="120dp"
                 android:background="@drawable/circle_img" />
 
             <ImageButton
