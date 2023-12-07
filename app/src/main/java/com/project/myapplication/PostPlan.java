@@ -1,6 +1,7 @@
 package com.project.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -21,6 +22,7 @@ import java.util.Calendar;
 public class PostPlan extends AppCompatActivity {
 
     TextView dateEditText, startTimeEditText, endTimeEditText;
+    AppCompatButton createPlanButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +49,7 @@ public class PostPlan extends AppCompatActivity {
         dateEditText = findViewById(R.id.dateEditText);
         startTimeEditText = findViewById(R.id.startTimeEditText);
         endTimeEditText = findViewById(R.id.endTimeEditText);
+        createPlanButton = findViewById(R.id.createPlanButton);
 
         dateEditText.setOnClickListener(new View.OnClickListener() {
 

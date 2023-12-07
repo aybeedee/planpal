@@ -1,6 +1,7 @@
 package com.project.myapplication;
 
 public class Group {
+
     String id;
     String Name;
     String description;
