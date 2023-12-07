@@ -65,7 +65,8 @@
         android:layout_weight="1"
         android:background="@drawable/rounded_search_bar"
         android:hint="Search..."
-        android:inputType="text" />
+        android:inputType="text"
+        android:imeOptions="actionSearch" />
 
     <LinearLayout
         android:orientation="vertical"

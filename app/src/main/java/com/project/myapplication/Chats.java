@@ -1,5 +1,6 @@
 package com.project.myapplication;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,10 +13,15 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.window.OnBackInvokedDispatcher;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -37,6 +43,7 @@ public class Chats extends AppCompatActivity {
     FirebaseAuth mAuth;
     DatabaseReference mDatabase;
     ImageView profileImage, group;
+    EditText groupSearchInput;
 
     RecyclerView groupsRV;
 
@@ -69,6 +76,7 @@ public class Chats extends AppCompatActivity {
         group = findViewById(R.id.group);
         profileImage = findViewById(R.id.profilePhoto);
         groupsRV = findViewById(R.id.contactRecyclerView);
+        groupSearchInput = findViewById(R.id.search_bar);
 
         mAuth = FirebaseAuth.getInstance();
         userId = mAuth.getUid().toString();
@@ -79,6 +87,24 @@ public class Chats extends AppCompatActivity {
         String ipAddress = getString(R.string.ip_addr);
         // Concatenate the retrieved IP address with the URL
         String url = "http://" + ipAddress;
+
+        mDatabase.child("users").child(userId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+
+                if (!task.isSuccessful()) {
+
+                    Log.e("firebase", "Error getting data", task.getException());
+                }
+
+                else {
+                    User1 userObject = task.getResult().getValue(User1.class);
+                    String fullProfilePath = url + userObject.getProfilePhotoUrl() + ".jpg";
+                    Log.d("dp-path", fullProfilePath);
+                    Picasso.get().load(fullProfilePath).into(profileImage);
+                }
+            }
+        });
 
         groupsList = new ArrayList<>();
         groupsAdapter = new GroupsAdapter(groupsList, Chats.this, userId);
@@ -129,21 +155,66 @@ public class Chats extends AppCompatActivity {
             }
         });
 
-        mDatabase.child("users").child(userId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+        groupSearchInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+
             @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
 
-                if (!task.isSuccessful()) {
+                if (i == EditorInfo.IME_ACTION_SEARCH) {
 
-                    Log.e("firebase", "Error getting data", task.getException());
+                    groupsList.clear();
+
+                    mDatabase.child("userGroups").child(userId).addChildEventListener(new ChildEventListener() {
+
+                        @Override
+                        public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                            ObjectReference groupObjectRef = snapshot.getValue(ObjectReference.class);
+
+                            mDatabase.child("groups").child(groupObjectRef.getId()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+
+                                @Override
+                                public void onComplete(@NonNull Task<DataSnapshot> task) {
+
+                                    if (task.isSuccessful()) {
+
+                                        Group groupObject = task.getResult().getValue(Group.class);
+
+                                        if (groupObject.getName().toLowerCase().contains(groupSearchInput.getText().toString().toLowerCase())) {
+
+                                            groupsList.add(groupObject);
+                                            groupsAdapter.notifyDataSetChanged();
+                                        }
+                                    }
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                        }
+
+                        @Override
+                        public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+                        }
+
+                        @Override
+                        public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+
+                    return true;
                 }
 
-                else {
-                    User1 userObject = task.getResult().getValue(User1.class);
-                    String fullProfilePath = url + userObject.getProfilePhotoUrl() + ".jpg";
-                    Log.d("dp-path", fullProfilePath);
-                    Picasso.get().load(fullProfilePath).into(profileImage);
-                }
+                return false;
             }
         });
 
@@ -163,6 +234,58 @@ public class Chats extends AppCompatActivity {
                 Intent intent = new Intent(Chats.this, ProfileViewSelf.class);
                 // Start the new activity
                 startActivity(intent);
+            }
+        });
+
+        getOnBackPressedDispatcher().addCallback(Chats.this, new OnBackPressedCallback(true) {
+
+            @Override
+            public void handleOnBackPressed() {
+
+                groupsList.clear();
+
+                mDatabase.child("userGroups").child(userId).addChildEventListener(new ChildEventListener() {
+
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                        ObjectReference groupObjectRef = snapshot.getValue(ObjectReference.class);
+
+                        mDatabase.child("groups").child(groupObjectRef.getId()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+
+                            @Override
+                            public void onComplete(@NonNull Task<DataSnapshot> task) {
+
+                                if (task.isSuccessful()) {
+
+                                    Group groupObject = task.getResult().getValue(Group.class);
+                                    groupsList.add(groupObject);
+                                    groupsAdapter.notifyDataSetChanged();
+                                }
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
             }
         });
     }
