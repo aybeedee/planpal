@@ -117,93 +117,118 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:background="@drawable/upcoming_plan"
-                android:layout_marginTop="10dp"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="10dp"
-                android:weightSum="2">
+                android:layout_marginTop="15dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:orientation="horizontal"
-                    android:layout_weight="0.75">
+                    android:layout_height="100dp"
+                    android:background="@drawable/upcoming_plan"
+                    android:orientation="vertical"
+                    android:padding="10dp"
+                    android:weightSum="2">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Dinner Meet"
-                        android:textColor="#FFFFFF"
-                        android:textSize="20dp"
-                        android:textStyle="bold"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:orientation="horizontal"
+                        android:layout_weight="0.75">
 
-                    <ImageView
-                        android:id="@+id/like_img"
-                        android:layout_width="27dp"
-                        android:layout_height="27dp"
-                        android:src="@drawable/like"
-                        android:layout_marginLeft="140dp"
-                        />
-                    <TextView
-                        android:id="@+id/like_increase"
-                        android:layout_width="27dp"
-                        android:layout_height="27dp"
-                        android:text="3"
-                        android:layout_marginLeft="5dp"
-                        android:textSize="20dp"
-                        android:textColor="#FFFFFF"
-                        />
-                    <ImageView
-                        android:id="@+id/dislike_img"
-                        android:layout_width="27dp"
-                        android:layout_height="27dp"
-                        android:src="@drawable/dislike"
-                        android:layout_marginLeft="0dp"
-                        />
-                    <TextView
-                        android:id="@+id/like_decrease"
-                        android:layout_width="27dp"
-                        android:layout_height="27dp"
-                        android:text="3"
-                        android:layout_marginLeft="5dp"
-                        android:textSize="20dp"
-                        android:textColor="#FFFFFF"
-                        />
+                        <TextView
+                            android:id="@+id/planName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text="Dinner Meet"
+                            android:textColor="#FFFFFF"
+                            android:textSize="20dp"
+                            android:textStyle="bold"
+                            android:gravity="center"/>
 
-                </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            android:gravity="right">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1.25"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="20dp">
-                    <TextView
-                        android:id="@+id/time"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="8:00 PM"
-                        android:textSize="15dp"
-                        android:textColor="#ffffff"
-                        android:layout_marginTop="10dp"/>
+                            <ImageView
+                                android:id="@+id/attendingButton"
+                                android:layout_width="27dp"
+                                android:layout_height="match_parent"
+                                android:src="@drawable/like"
+                                />
+                            <TextView
+                                android:id="@+id/attendingCount"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:text="3"
+                                android:layout_marginLeft="5dp"
+                                android:textSize="20dp"
+                                android:textColor="#FFFFFF" />
+                            <ImageView
+                                android:id="@+id/notAttendingButton"
+                                android:layout_width="27dp"
+                                android:layout_height="match_parent"
+                                android:src="@drawable/dislike"
+                                android:layout_marginLeft="10dp"
+                                />
+                            <TextView
+                                android:id="@+id/notAttendingCount"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:text="3"
+                                android:layout_marginLeft="5dp"
+                                android:textSize="20dp"
+                                android:textColor="#FFFFFF"
+                                />
+                        </LinearLayout>
 
-                    <ImageView
-                        android:id="@+id/view_button"
-                        android:layout_width="128dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="60dp"
-                        android:src="@drawable/view_button"/>
+                    </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/date"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="17/10/2023"
-                        android:textSize="15dp"
-                        android:textColor="#ffffff"
-                        android:layout_marginLeft="30dp"
-                        android:layout_marginTop="10dp"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1.25"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="20dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:textAlignment="center"
+                        android:weightSum="3">
+
+                        <TextView
+                            android:id="@+id/planTime"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text="8:00 PM"
+                            android:textSize="15dp"
+                            android:textColor="#ffffff"
+                            android:gravity="center|start"
+                            android:layout_weight="1"/>
+
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/planStatus"
+                            android:background="@drawable/oval_button"
+                            android:layout_width="64dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="0dp"
+                            android:text="VIEW"
+                            android:textColor="#5D39C9"
+                            android:textStyle="bold"
+                            android:layout_weight="1"/>
+
+                        <TextView
+                            android:id="@+id/planDate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text="17/10/2023"
+                            android:textSize="15dp"
+                            android:textColor="#ffffff"
+                            android:gravity="center|end"
+                            android:layout_weight="1"/>
+
+                    </LinearLayout>
+
                 </LinearLayout>
 
             </LinearLayout>
