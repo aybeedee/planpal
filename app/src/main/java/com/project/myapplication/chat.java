@@ -150,6 +150,15 @@ public class chat extends AppCompatActivity {
             }
         });
 
+        groupPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(chat.this, groupDetailsMember.class);
+                intent.putExtra("groupId", groupId);
+                startActivity(intent);
+            }
+        });
+
         messagesList = new ArrayList<>();
         messageAdapter = new MessagesAdapter(messagesList, chat.this, userId);
         messagesRV.setAdapter(messageAdapter);

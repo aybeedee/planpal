@@ -197,6 +197,7 @@ public class PostPlan extends AppCompatActivity {
 
                                         Toast.makeText(PostPlan.this, "Plan Created Successfully", Toast.LENGTH_LONG).show();
                                         Intent intent = new Intent(PostPlan.this, Plans.class);
+                                        intent.putExtra("groupId", groupId);
                                         startActivity(intent);
                                         finish();
                                     }
