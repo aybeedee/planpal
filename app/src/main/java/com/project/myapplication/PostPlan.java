@@ -7,6 +7,7 @@ import androidx.appcompat.widget.AppCompatButton;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -195,6 +196,9 @@ public class PostPlan extends AppCompatActivity {
                                     if (task.isSuccessful()) {
 
                                         Toast.makeText(PostPlan.this, "Plan Created Successfully", Toast.LENGTH_LONG).show();
+                                        Intent intent = new Intent(PostPlan.this, Plans.class);
+                                        startActivity(intent);
+                                        finish();
                                     }
 
                                     else {

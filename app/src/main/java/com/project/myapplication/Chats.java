@@ -46,7 +46,6 @@ public class Chats extends AppCompatActivity {
     EditText groupSearchInput;
 
     RecyclerView groupsRV;
-
     GroupsAdapter groupsAdapter;
     List<Group> groupsList;
 

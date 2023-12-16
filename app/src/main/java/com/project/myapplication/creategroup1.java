@@ -261,6 +261,7 @@ public class creategroup1 extends AppCompatActivity {
                             }
 
                             Intent intent = new Intent(creategroup1.this, Chats.class);
+                            intent.putExtra("groupId", groupId);
                             startActivity(intent);
                             finish();
                         }
