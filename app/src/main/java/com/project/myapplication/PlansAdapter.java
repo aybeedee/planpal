@@ -3,6 +3,7 @@ package com.project.myapplication;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
@@ -52,12 +57,16 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.MyViewHolder
 
         Plan planObject = plansList.get(position);
 
+        String planId = planObject.getId();
+        Integer planAttendingCount = planObject.getAttendingCount();
+        Integer planNotAttendingCount = planObject.getNotAttendingCount();
+
         Log.d("IN PLANS LIST ADAPTER: ", planObject.getName());
 
         holder.planName.setText(planObject.getName());
         holder.planDate.setText(planObject.getDate());
-        holder.attendingCount.setText(planObject.getAttendingCount().toString());
-        holder.notAttendingCount.setText(planObject.getNotAttendingCount().toString());
+        holder.attendingCount.setText(planAttendingCount.toString());
+        holder.notAttendingCount.setText(planNotAttendingCount.toString());
 
         try {
             SimpleDateFormat _24HourSDF = new SimpleDateFormat("HH:mm");
@@ -79,27 +88,56 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.MyViewHolder
 
                 Intent intent = new Intent(context, PlanDetails.class);
                 intent.putExtra("groupId", groupId);
-                intent.putExtra("planId", planObject.getId());
+                intent.putExtra("planId", planId);
                 context.startActivity(intent);
             }
         });
 
-//        Group groupObject = groupsList.get(position);
-//
-//        holder.groupName.setText(groupObject.getName());
-//        holder.groupDescription.setText(groupObject.getDescription().substring(0, Math.min(groupObject.getDescription().length(), 36)));
-//        Picasso.get().load(imageServerURL + groupObject.getGroupPhotoUrl() + ".jpg").into(holder.groupPhoto);
-//
-//        holder.groupItem.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View view) {
-//
-//                Intent intent = new Intent(context, chat.class);
-//                intent.putExtra("groupId", groupObject.getId());
-//                context.startActivity(intent);
-//            }
-//        });
+        holder.attendingButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+
+                Integer newAttendingCount = planAttendingCount + 1;
+
+                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+
+                mDatabase.child("plans").child(planId).child("attendingCount").setValue(newAttendingCount).addOnCompleteListener(new OnCompleteListener<Void>() {
+
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+
+                        if (task.isSuccessful()) {
+
+                            holder.attendingCount.setText(newAttendingCount.toString());
+                        }
+                    }
+                });
+            }
+        });
+
+        holder.notAttendingButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+
+                Integer newNotAttendingCount = planNotAttendingCount + 1;
+
+                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+
+                mDatabase.child("plans").child(planId).child("notAttendingCount").setValue(newNotAttendingCount).addOnCompleteListener(new OnCompleteListener<Void>() {
+
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+
+                        if (task.isSuccessful()) {
+
+                            holder.notAttendingCount.setText(newNotAttendingCount.toString());
+                        }
+                    }
+                });
+            }
+        });
     }
 
     @Override
@@ -112,6 +150,7 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.MyViewHolder
 
         AppCompatButton planStatus;
         TextView planName, planTime, planDate, attendingCount, notAttendingCount;
+        ImageView attendingButton, notAttendingButton;
         LinearLayout planItem;
 
         public MyViewHolder(@NonNull View itemView) {
@@ -124,6 +163,8 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.MyViewHolder
             planDate = itemView.findViewById(R.id.planDate);
             attendingCount = itemView.findViewById(R.id.attendingCount);
             notAttendingCount = itemView.findViewById(R.id.notAttendingCount);
+            attendingButton = itemView.findViewById(R.id.attendingButton);
+            notAttendingButton = itemView.findViewById(R.id.notAttendingButton);
             planItem = itemView.findViewById(R.id.planItem);
         }
     }
