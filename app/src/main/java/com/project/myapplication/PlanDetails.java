@@ -141,26 +141,48 @@ public class PlanDetails extends AppCompatActivity {
 
                                 if (scheduleIndex[0] == totalSchedules) {
 
-                                    String[] result = RunScheduler();
+                                    String[] allFreeResult = AllFreeScheduler();
 
-                                    Log.d("result", "returned result: " + result);
+                                    if (allFreeResult != null) {
 
-                                    if (result != null) {
-
-                                        Log.d("all-free-start", result[0]);
-                                        Log.d("all-free-end", result[1]);
+                                        Log.d("all-free-start", allFreeResult[0]);
+                                        Log.d("all-free-end", allFreeResult[1]);
                                     }
 
                                     try {
 
                                         SimpleDateFormat _24HourSDF = new SimpleDateFormat("dd-MM-yyyy HH:mm");
                                         SimpleDateFormat _12HourSDF = new SimpleDateFormat("hh:mm a");
-                                        Date _24HourStartTime = _24HourSDF.parse(result[0]);
-                                        Date _24HourEndTime = _24HourSDF.parse(result[1]);
+                                        Date _24HourStartTime = _24HourSDF.parse(allFreeResult[0]);
+                                        Date _24HourEndTime = _24HourSDF.parse(allFreeResult[1]);
                                         String _12HourStartTime = _12HourSDF.format(_24HourStartTime);
                                         String _12HourEndTime = _12HourSDF.format(_24HourEndTime);
 
                                         allFreeSchedule.setText(_12HourStartTime + " - " + _12HourEndTime);
+
+                                    } catch (Exception e) {
+
+                                        e.printStackTrace();
+                                    }
+
+                                    String[] bestFitResult = BestFitScheduler();
+
+                                    if (bestFitResult != null) {
+
+                                        Log.d("best-fit-start", bestFitResult[0]);
+                                        Log.d("best-fit-end", bestFitResult[1]);
+                                    }
+
+                                    try {
+
+                                        SimpleDateFormat _24HourSDF = new SimpleDateFormat("HH:mm");
+                                        SimpleDateFormat _12HourSDF = new SimpleDateFormat("hh:mm a");
+                                        Date _24HourStartTime = _24HourSDF.parse(bestFitResult[0]);
+                                        Date _24HourEndTime = _24HourSDF.parse(bestFitResult[1]);
+                                        String _12HourStartTime = _12HourSDF.format(_24HourStartTime);
+                                        String _12HourEndTime = _12HourSDF.format(_24HourEndTime);
+
+                                        bestFitSchedule.setText(_12HourStartTime + " - " + _12HourEndTime);
 
                                     } catch (Exception e) {
 
@@ -198,20 +220,21 @@ public class PlanDetails extends AppCompatActivity {
         win.setAttributes(winParams);
     }
 
-    private String[] RunScheduler() {
+    private String[] AllFreeScheduler() {
 
         Log.d("plan-schedule", thisPlanDate + " | " + thisPlanStartTime + " | " + thisPlanEndTime);
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
 
         try {
+
             Date planStartDate = dateFormat.parse(thisPlanDate + " " + thisPlanStartTime);
             Date planEndDate = dateFormat.parse(thisPlanDate + " " + thisPlanEndTime);
 
             Date largestFreeStartTime = planStartDate;
             Date largestFreeEndTime = planEndDate;
 
-            Log.d("scheduler-before-running", largestFreeStartTime.toString() + " | " + largestFreeEndTime.toString());
+            Log.d("all-free-before-running", largestFreeStartTime.toString() + " | " + largestFreeEndTime.toString());
 
             for (int i = 0; i < userSchedules.size(); i++) {
 
@@ -232,7 +255,7 @@ public class PlanDetails extends AppCompatActivity {
                 }
             }
 
-            Log.d("scheduler-after-running", largestFreeStartTime.toString() + " | " + largestFreeEndTime.toString());
+            Log.d("all-free-after-running", largestFreeStartTime.toString() + " | " + largestFreeEndTime.toString());
 
             // Check if there is a common free time
             if (largestFreeStartTime.before(largestFreeEndTime)) {
@@ -247,6 +270,55 @@ public class PlanDetails extends AppCompatActivity {
                 // No common free time found
                 return null;
             }
+
+        } catch (ParseException e) {
+
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private String[] BestFitScheduler() {
+
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+
+        try {
+            Date planStart = sdf.parse(thisPlanStartTime);
+            Date planEnd = sdf.parse(thisPlanEndTime);
+
+            long bestFitOverlap = Long.MAX_VALUE;
+            String[] bestFitPeriod = null;
+
+            for (int i = 0; i < userSchedules.size(); i++) {
+
+                if (userSchedules.get(i).getDate().equals(thisPlanDate)) {
+
+                    Date userStart = sdf.parse(userSchedules.get(i).getStartTime());
+                    Date userEnd = sdf.parse(userSchedules.get(i).getEndTime());
+
+                    // get the common time overlap between the user's schedule and the plan timings, sets 0 if no overlap
+                    long overlap = Math.max(0, Math.min(userEnd.getTime(), planEnd.getTime()) - Math.max(userStart.getTime(), planStart.getTime()));
+
+                    if (overlap < bestFitOverlap) {
+                        bestFitOverlap = overlap;
+
+                        if (bestFitPeriod == null) {
+
+                            bestFitPeriod = new String[] {
+                                    userSchedules.get(i).getStartTime(),
+                                    userSchedules.get(i).getEndTime()
+                            };
+                        }
+
+                        else {
+                            bestFitPeriod[0] = userSchedules.get(i).getStartTime();
+                            bestFitPeriod[1] = userSchedules.get(i).getEndTime();
+                        }
+                    }
+                }
+            }
+
+            return bestFitPeriod;
 
         } catch (ParseException e) {
             e.printStackTrace();
