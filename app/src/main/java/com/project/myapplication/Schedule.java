@@ -161,6 +161,7 @@ public class Schedule extends AppCompatActivity {
                         if (task.isSuccessful()) {
 
                             Toast.makeText(Schedule.this, "Schedule Updated!", Toast.LENGTH_LONG).show();
+                            finish();
                         }
                     }
                 });

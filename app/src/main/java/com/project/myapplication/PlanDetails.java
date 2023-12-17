@@ -12,15 +12,22 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.auth.User;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class PlanDetails extends AppCompatActivity {
 
@@ -30,6 +37,9 @@ public class PlanDetails extends AppCompatActivity {
 
     TextView planName, planLocation, planDate, planStartTime, planEndTime;
     TextView allFreeSchedule, bestFitSchedule;
+
+    List<UserSchedule> userSchedules;
+    String thisPlanDate, thisPlanStartTime, thisPlanEndTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,13 +89,18 @@ public class PlanDetails extends AppCompatActivity {
 
                     planName.setText(planObject.getName());
                     planLocation.setText(planObject.getLocation());
-                    planDate.setText(planObject.getDate());
+
+                    thisPlanDate = planObject.getDate();
+                    thisPlanStartTime = planObject.getStartTime();
+                    thisPlanEndTime = planObject.getEndTime();
+
+                    planDate.setText(thisPlanDate);
 
                     try {
                         SimpleDateFormat _24HourSDF = new SimpleDateFormat("HH:mm");
                         SimpleDateFormat _12HourSDF = new SimpleDateFormat("hh:mm a");
-                        Date _24HourStartTime = _24HourSDF.parse(planObject.getStartTime());
-                        Date _24HourEndTime = _24HourSDF.parse(planObject.getEndTime());
+                        Date _24HourStartTime = _24HourSDF.parse(thisPlanStartTime);
+                        Date _24HourEndTime = _24HourSDF.parse(thisPlanEndTime);
                         planStartTime.setText(_12HourSDF.format(_24HourStartTime));
                         planEndTime.setText(_12HourSDF.format(_24HourEndTime));
                     } catch (Exception e) {
@@ -93,6 +108,74 @@ public class PlanDetails extends AppCompatActivity {
                     }
 
                 }
+            }
+        });
+
+        userSchedules = new ArrayList<>();
+
+        // fetch schedules of all group members
+        mDatabase.child("groupUsers").child(groupId).addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                long totalSchedules = snapshot.getChildrenCount();
+
+                final long[] scheduleIndex = {0};
+
+                for (DataSnapshot groupMemberSnapshot : snapshot.getChildren()) {
+
+                    ObjectReference groupMemberRef = groupMemberSnapshot.getValue(ObjectReference.class);
+
+                    mDatabase.child("userSchedules").child(groupMemberRef.getId()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+
+                        @Override
+                        public void onComplete(@NonNull Task<DataSnapshot> task) {
+
+                            if (task.isSuccessful()) {
+
+                                UserSchedule scheduleObject = task.getResult().getValue(UserSchedule.class);
+                                userSchedules.add(scheduleObject);
+
+                                scheduleIndex[0]++;
+
+                                if (scheduleIndex[0] == totalSchedules) {
+
+                                    String[] result = RunScheduler();
+
+                                    Log.d("result", "returned result: " + result);
+
+                                    if (result != null) {
+
+                                        Log.d("all-free-start", result[0]);
+                                        Log.d("all-free-end", result[1]);
+                                    }
+
+                                    try {
+
+                                        SimpleDateFormat _24HourSDF = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+                                        SimpleDateFormat _12HourSDF = new SimpleDateFormat("hh:mm a");
+                                        Date _24HourStartTime = _24HourSDF.parse(result[0]);
+                                        Date _24HourEndTime = _24HourSDF.parse(result[1]);
+                                        String _12HourStartTime = _12HourSDF.format(_24HourStartTime);
+                                        String _12HourEndTime = _12HourSDF.format(_24HourEndTime);
+
+                                        allFreeSchedule.setText(_12HourStartTime + " - " + _12HourEndTime);
+
+                                    } catch (Exception e) {
+
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
     }
@@ -113,5 +196,61 @@ public class PlanDetails extends AppCompatActivity {
         }
 
         win.setAttributes(winParams);
+    }
+
+    private String[] RunScheduler() {
+
+        Log.d("plan-schedule", thisPlanDate + " | " + thisPlanStartTime + " | " + thisPlanEndTime);
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+
+        try {
+            Date planStartDate = dateFormat.parse(thisPlanDate + " " + thisPlanStartTime);
+            Date planEndDate = dateFormat.parse(thisPlanDate + " " + thisPlanEndTime);
+
+            Date largestFreeStartTime = planStartDate;
+            Date largestFreeEndTime = planEndDate;
+
+            Log.d("scheduler-before-running", largestFreeStartTime.toString() + " | " + largestFreeEndTime.toString());
+
+            for (int i = 0; i < userSchedules.size(); i++) {
+
+                Log.d("user-schedule", userSchedules.get(i).getDate() + " | " + userSchedules.get(i).getStartTime() + " | " + userSchedules.get(i).getEndTime());
+
+                if (userSchedules.get(i).getDate().equals(thisPlanDate)) {
+
+                    Date userStartTime = dateFormat.parse(thisPlanDate + " " + userSchedules.get(i).getStartTime());
+                    Date userEndTime = dateFormat.parse(thisPlanDate + " " + userSchedules.get(i).getEndTime());
+
+                    if (userStartTime.after(largestFreeStartTime)) {
+                        largestFreeStartTime = userStartTime;
+                    }
+
+                    if (userEndTime.before(largestFreeEndTime)) {
+                        largestFreeEndTime = userEndTime;
+                    }
+                }
+            }
+
+            Log.d("scheduler-after-running", largestFreeStartTime.toString() + " | " + largestFreeEndTime.toString());
+
+            // Check if there is a common free time
+            if (largestFreeStartTime.before(largestFreeEndTime)) {
+
+                return new String[]{
+                        dateFormat.format(largestFreeStartTime),
+                        dateFormat.format(largestFreeEndTime)
+                };
+
+            } else {
+
+                // No common free time found
+                return null;
+            }
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

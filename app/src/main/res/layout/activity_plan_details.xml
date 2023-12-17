@@ -309,7 +309,7 @@
                         android:id="@+id/allFreeSchedule"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="5:00 PM - 10:00 PM"
+                        android:text="-"
                         android:textColor="@color/black"
                         android:textStyle="bold"
                         android:textSize="17dp"/>
@@ -356,7 +356,7 @@
                         android:id="@+id/bestFitSchedule"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="4:30 PM - 10:00 PM"
+                        android:text="-"
                         android:textColor="@color/black"
                         android:textStyle="bold"
                         android:textSize="17dp"/>
