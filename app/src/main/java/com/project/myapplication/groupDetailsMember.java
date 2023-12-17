@@ -12,10 +12,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -24,18 +29,26 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class groupDetailsMember extends AppCompatActivity {
 
+    FirebaseAuth mAuth;
     DatabaseReference mDatabase;
 
+    String userId;
     String imageServerURL;
     String groupId;
 
     TextView groupName, groupDescription;
     TextView planName, planTime, planDate, attendingCount, notAttendingCount;
     ImageView groupPhoto;
+
+    RecyclerView membersRV;
+    FriendsListAdapter membersAdapter;
+    List<User1> membersList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +80,10 @@ public class groupDetailsMember extends AppCompatActivity {
         attendingCount = findViewById(R.id.attendingCount);
         notAttendingCount = findViewById(R.id.notAttendingCount);
         groupPhoto = findViewById(R.id.profile_pic);
+        membersRV = findViewById(R.id.peopleGroup);
+
+        mAuth = FirebaseAuth.getInstance();
+        userId = mAuth.getUid().toString();
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
@@ -147,6 +164,55 @@ public class groupDetailsMember extends AppCompatActivity {
                         }
                     });
                 }
+            }
+        });
+
+        membersList = new ArrayList<>();
+        membersAdapter = new FriendsListAdapter(membersList, groupDetailsMember.this, userId);
+        membersRV.setAdapter(membersAdapter);
+        RecyclerView.LayoutManager membersLM = new LinearLayoutManager(groupDetailsMember.this);
+        membersRV.setLayoutManager(membersLM);
+
+        mDatabase.child("groupUsers").child(groupId).addChildEventListener(new ChildEventListener() {
+
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                ObjectReference memberObjectRef = snapshot.getValue(ObjectReference.class);
+
+                mDatabase.child("users").child(memberObjectRef.getId()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+
+                        if (task.isSuccessful()) {
+
+                            User1 memberObject = task.getResult().getValue(User1.class);
+                            membersList.add(memberObject);
+                            membersAdapter.notifyDataSetChanged();
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
     }

@@ -117,7 +117,7 @@ public class FriendsList extends AppCompatActivity {
         // Initialize a list to store user friend data
         UsersList = new ArrayList<>();
 
-        friendsAdapter = new FriendsListAdapter(UsersList , FriendsList.this, userId);
+        friendsAdapter = new FriendsListAdapter(UsersList, FriendsList.this, userId);
         friends_recycler.setAdapter(friendsAdapter);
         RecyclerView.LayoutManager featuredLM = new LinearLayoutManager(FriendsList.this);
         friends_recycler.setLayoutManager(featuredLM);
