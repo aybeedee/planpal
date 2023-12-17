@@ -77,7 +77,7 @@ public class Plans extends AppCompatActivity {
         groupId = getIntent().getStringExtra("groupId");
 
         plansList = new ArrayList<>();
-        plansAdapter = new PlansAdapter(plansList, Plans.this, userId);
+        plansAdapter = new PlansAdapter(plansList, Plans.this, userId, groupId);
         plansRV.setAdapter(plansAdapter);
         RecyclerView.LayoutManager plansLM = new LinearLayoutManager(Plans.this);
         plansRV.setLayoutManager(plansLM);

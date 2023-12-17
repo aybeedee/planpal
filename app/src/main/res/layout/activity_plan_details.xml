@@ -35,7 +35,7 @@
             android:text="Plan Name"
             android:textColor="#ffffff"
             android:textStyle="bold"
-            android:textSize="30dp"/>
+            android:textSize="26dp"/>
 
     </RelativeLayout>
 
@@ -97,6 +97,7 @@
                         android:textSize="13dp"/>
 
                     <TextView
+                        android:id="@+id/planLocation"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Zentos BBQ, Islamabad"
@@ -143,6 +144,7 @@
                         android:textSize="13dp"/>
 
                     <TextView
+                        android:id="@+id/planDate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="20-12-2023"
@@ -197,6 +199,7 @@
                             android:textSize="13dp"/>
 
                         <TextView
+                            android:id="@+id/planStartTime"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="3:15 PM"
@@ -244,6 +247,7 @@
                             android:textSize="13dp"/>
 
                         <TextView
+                            android:id="@+id/planEndTime"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="9:30 PM"
@@ -302,6 +306,7 @@
                         android:textSize="13dp"/>
 
                     <TextView
+                        android:id="@+id/allFreeSchedule"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="5:00 PM - 10:00 PM"
@@ -348,6 +353,7 @@
                         android:textSize="13dp"/>
 
                     <TextView
+                        android:id="@+id/bestFitSchedule"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="4:30 PM - 10:00 PM"

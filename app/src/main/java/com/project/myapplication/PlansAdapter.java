@@ -27,13 +27,15 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.MyViewHolder
     List<Plan> plansList;
     Context context;
     String userId;
+    String groupId;
     String imageServerURL;
 
-    public PlansAdapter(List<Plan> plansList, Context context, String userId) {
+    public PlansAdapter(List<Plan> plansList, Context context, String userId, String groupId) {
 
         this.plansList = plansList;
         this.context = context;
         this.userId = userId;
+        this.groupId = groupId;
         this.imageServerURL = "http://" + context.getString(R.string.ip_addr);
     }
 
@@ -69,6 +71,19 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.MyViewHolder
         if (planObject.getNotAttendingCount() > planObject.getAttendingCount()) {
             holder.planStatus.setText("CANCELLED");
         }
+
+        holder.planItem.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(context, PlanDetails.class);
+                intent.putExtra("groupId", groupId);
+                intent.putExtra("planId", planObject.getId());
+                context.startActivity(intent);
+            }
+        });
+
 //        Group groupObject = groupsList.get(position);
 //
 //        holder.groupName.setText(groupObject.getName());

@@ -230,6 +230,18 @@ public class groupDetailsMember extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        viewPlanButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(groupDetailsMember.this, PlanDetails.class);
+                intent.putExtra("groupId", groupId);
+                intent.putExtra("planId", nextPlanId[0]);
+                startActivity(intent);
+            }
+        });
     }
 
     public static void setWindowFlag(Activity activity, final int bits, boolean on) {
