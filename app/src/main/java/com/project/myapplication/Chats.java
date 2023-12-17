@@ -31,6 +31,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -285,6 +286,25 @@ public class Chats extends AppCompatActivity {
 
                     }
                 });
+            }
+        });
+
+        getFCMToken();
+    }
+
+    void getFCMToken() {
+
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
+
+            @Override
+            public void onComplete(@NonNull Task<String> task) {
+
+                if (task.isSuccessful()) {
+
+                    String token = task.getResult();
+                    Log.d("Token", token);
+                    mDatabase.child("users").child(mAuth.getUid().toString()).child("fcmToken").setValue(token);
+                }
             }
         });
     }

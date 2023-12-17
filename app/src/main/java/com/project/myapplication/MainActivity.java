@@ -24,9 +24,13 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 public class MainActivity extends AppCompatActivity {
 
+    FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +50,21 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+
+        if (getIntent().getExtras() != null) {
+
+            String groupId = getIntent().getExtras().getString("groupId");
+
+            Intent chatIntent = new Intent(MainActivity.this, Chats.class);
+            chatIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            startActivity(chatIntent);
+
+            Intent intent = new Intent(MainActivity.this, chat.class);
+            intent.putExtra("groupId", groupId);
+            startActivity(intent);
+            finish();
+        }
 
         Button signupButton = findViewById(R.id.Signupbutton);
         Button loginButton = findViewById(R.id.loginbutton);
@@ -53,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
         TextInputEditText emailEditText = email.findViewById(R.id.email_edit_text);
         TextInputEditText passwordEditText = findViewById(R.id.password_edit_text);
         ImageButton toggleButton = findViewById(R.id.toggle_button);
-        FirebaseAuth mAuth;
+
         mAuth = FirebaseAuth.getInstance();
 
         loginButton.setOnClickListener(new View.OnClickListener() {

@@ -44,6 +44,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -51,11 +52,19 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
 
 public class chat extends AppCompatActivity {
 
@@ -216,10 +225,109 @@ public class chat extends AppCompatActivity {
 
                         if (task.isSuccessful()) {
 
-                            text = "";
-                            imageUrl = "";
+                            if (text.equals("") && !imageUrl.equals("")) {
 
-                            messageTextInput.setText("");
+                                mDatabase.child("groupUsers").child(groupId).addValueEventListener(new ValueEventListener() {
+
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                                        long totalMembers = snapshot.getChildrenCount();
+
+                                        final long[] memberIndex = {0};
+
+                                        for (DataSnapshot groupMemberSnapshot : snapshot.getChildren()) {
+
+                                            ObjectReference groupMemberRef = groupMemberSnapshot.getValue(ObjectReference.class);
+
+                                            mDatabase.child("users").child(groupMemberRef.getId()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+
+                                                @Override
+                                                public void onComplete(@NonNull Task<DataSnapshot> task) {
+
+                                                    if (task.isSuccessful()) {
+
+                                                        User1 userObject = task.getResult().getValue(User1.class);
+                                                        String receiverFCMToken = userObject.getFcmToken();
+
+                                                        if (receiverFCMToken != null) {
+
+                                                            sendNotification((userName + ": sent a photo"), userObject.getFcmToken());
+                                                        }
+
+                                                        memberIndex[0]++;
+
+                                                        if (memberIndex[0] == totalMembers) {
+
+                                                            text = "";
+                                                            imageUrl = "";
+
+                                                            messageTextInput.setText("");
+                                                        }
+                                                    }
+                                                }
+                                            });
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
+                            }
+
+                            else {
+
+                                mDatabase.child("groupUsers").child(groupId).addValueEventListener(new ValueEventListener() {
+
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                                        long totalMembers = snapshot.getChildrenCount();
+
+                                        final long[] memberIndex = {0};
+
+                                        for (DataSnapshot groupMemberSnapshot : snapshot.getChildren()) {
+
+                                            ObjectReference groupMemberRef = groupMemberSnapshot.getValue(ObjectReference.class);
+
+                                            mDatabase.child("users").child(groupMemberRef.getId()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+
+                                                @Override
+                                                public void onComplete(@NonNull Task<DataSnapshot> task) {
+
+                                                    if (task.isSuccessful()) {
+
+                                                        User1 userObject = task.getResult().getValue(User1.class);
+                                                        String receiverFCMToken = userObject.getFcmToken();
+
+                                                        if (receiverFCMToken != null) {
+
+                                                            sendNotification((userName + ": " + text), userObject.getFcmToken());
+                                                        }
+
+                                                        memberIndex[0]++;
+
+                                                        if (memberIndex[0] == totalMembers) {
+
+                                                            text = "";
+                                                            imageUrl = "";
+
+                                                            messageTextInput.setText("");
+                                                        }
+                                                    }
+                                                }
+                                            });
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
+                            }
 
                             Toast.makeText(chat.this, "Message Sent", Toast.LENGTH_LONG).show();
                         }
@@ -348,6 +456,57 @@ public class chat extends AppCompatActivity {
             result = uri.getLastPathSegment();
         }
         return result;
+    }
+
+    void sendNotification(String message, String receiverFCMToken) {
+
+        JSONObject jsonObject = new JSONObject();
+
+        try {
+
+            JSONObject notificationObject = new JSONObject();
+            notificationObject.put("title", groupName.getText().toString());
+            notificationObject.put("body", message);
+
+            JSONObject dataObject = new JSONObject();
+            dataObject.put("groupId", groupId);
+
+            jsonObject.put("notification", notificationObject);
+            jsonObject.put("data", dataObject);
+            jsonObject.put("to", receiverFCMToken);
+
+            callAPI(jsonObject);
+        }
+
+        catch (Exception e) {
+
+        }
+    }
+
+    void callAPI(JSONObject jsonObject) {
+
+        MediaType JSON = MediaType.get("application/json");
+        OkHttpClient client = new OkHttpClient();
+        String url = "https://fcm.googleapis.com/fcm/send";
+        RequestBody body = RequestBody.create(jsonObject.toString(), JSON);
+        okhttp3.Request request = new Request.Builder()
+                .url(url)
+                .post(body)
+                .header("Authorization", "Bearer AAAAqnI8b0s:APA91bHzs6_yTZ_0mCpHVW7QvafTCPmMev3orBEAXB9QjOvnXxMHILEdFiYDXXRLjtY8XfG9DzpQT1MnZkqaBbBM8Gov9VlGsKD5cYja84LVWLysSk7LHk3BtKLLWl5Jm6TIp-8Gacao")
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull okhttp3.Response response) throws IOException {
+
+            }
+        });
     }
 
     public static void setWindowFlag(Activity activity, final int bits, boolean on) {
