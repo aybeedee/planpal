@@ -207,7 +207,7 @@
                             android:layout_weight="1"/>
 
                         <androidx.appcompat.widget.AppCompatButton
-                            android:id="@+id/planStatus"
+                            android:id="@+id/viewPlanButton"
                             android:background="@drawable/oval_button"
                             android:layout_width="64dp"
                             android:layout_height="wrap_content"

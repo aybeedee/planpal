@@ -1,6 +1,7 @@
 package com.project.myapplication;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -45,6 +47,7 @@ public class groupDetailsMember extends AppCompatActivity {
     TextView groupName, groupDescription;
     TextView planName, planTime, planDate, attendingCount, notAttendingCount;
     ImageView groupPhoto;
+    AppCompatButton plansButton, viewPlanButton;
 
     RecyclerView membersRV;
     FriendsListAdapter membersAdapter;
@@ -80,6 +83,8 @@ public class groupDetailsMember extends AppCompatActivity {
         attendingCount = findViewById(R.id.attendingCount);
         notAttendingCount = findViewById(R.id.notAttendingCount);
         groupPhoto = findViewById(R.id.profile_pic);
+        plansButton = findViewById(R.id.plansButton);
+        viewPlanButton = findViewById(R.id.viewPlanButton);
         membersRV = findViewById(R.id.peopleGroup);
 
         mAuth = FirebaseAuth.getInstance();
@@ -213,6 +218,16 @@ public class groupDetailsMember extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
+            }
+        });
+
+        plansButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(groupDetailsMember.this, Plans.class);
+                intent.putExtra("groupId", groupId);
+                startActivity(intent);
             }
         });
     }
