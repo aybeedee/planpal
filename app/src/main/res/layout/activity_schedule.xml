@@ -41,45 +41,57 @@
         android:background="@drawable/rounded_corner"
         android:padding="20dp"
         >
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="Free Schedule"
+            android:text="Your Schedule"
             android:textStyle="bold"
             android:textSize="24sp"
             android:layout_marginBottom="20dp"
+            android:textColor="@color/black"
             />
 
-        <EditText
+        <TextView
             android:id="@+id/dateEditText"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:hint="Date"
+            android:text="Select Date"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
             android:background="@drawable/rounded_box"
             android:layout_marginBottom="20dp"
             android:drawableLeft="@drawable/calendar_foreground"
-            />
+            android:textSize="18sp"
+            android:textColor="@color/primary_purple" />
 
-        <EditText
+        <TextView
             android:id="@+id/startTimeEditText"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:hint="Start Time"
+            android:text="Free From"
             android:background="@drawable/rounded_box"
             android:layout_marginBottom="20dp"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
             android:drawableLeft="@drawable/start_time_foreground"
-            />
+            android:textSize="18sp"
+            android:textColor="@color/primary_purple" />
 
-        <EditText
+        <TextView
             android:id="@+id/endTimeEditText"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:hint="End Time"
+            android:text="Free Till"
             android:background="@drawable/rounded_box"
             android:layout_marginBottom="20dp"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
             android:drawableLeft="@drawable/time_foreground"
-            />
+            android:textSize="18sp"
+            android:textColor="@color/primary_purple" />
+
         <ImageView
             android:id="@+id/updateSchedule"
             android:layout_width="250dp"

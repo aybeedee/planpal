@@ -1,6 +1,5 @@
 package com.project.myapplication;
 
-
 public class User1 {
 
     String id;
